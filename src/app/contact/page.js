@@ -36,11 +36,11 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pb-12">
+    <div className="pb-12 md:pb-24">
       {/* Header */}
-      <section className="bg-stone-50 py-10 border-b border-stone-200">
+      <section className="bg-stone-50 py-12 md:py-20 border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-aos="fade-up">
-          <h1 className="text-4xl md:text-6xl font-bold text-stone-900 mb-4">Contact Us</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-stone-900 mb-4 md:mb-6">Contact Us</h1>
           <p className="text-lg text-stone-600 max-w-2xl mx-auto">
             Have questions about our pure wood-pressed oils? We'd love to hear from you.
           </p>
@@ -50,9 +50,9 @@ export default function ContactPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Contact Details */}
-          <div className="lg:col-span-1 space-y-4">
+          <div className="lg:col-span-1 space-y-6">
             {contactInfo.map((info, idx) => (
-              <div key={info.title} className="bg-white p-6 rounded-3xl border border-stone-100 shadow-sm" data-aos="fade-up" data-aos-delay={idx * 100}>
+              <div key={info.title} className="bg-white p-8 rounded-3xl border border-stone-100 shadow-sm" data-aos="fade-up" data-aos-delay={idx * 100}>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
                   <info.icon className="w-6 h-6" />
                 </div>
@@ -76,8 +76,8 @@ export default function ContactPage() {
           </div>
 
           {/* Contact Form */}
-          <div className="lg:col-span-2 bg-white p-8 md:p-10 rounded-3xl border border-stone-100 shadow-xl" data-aos="fade-left">
-            <h2 className="text-3xl font-bold text-stone-900 mb-6">Send us a Message</h2>
+          <div className="lg:col-span-2 bg-white p-8 md:p-12 rounded-3xl border border-stone-100 shadow-xl" data-aos="fade-left">
+            <h2 className="text-3xl font-bold text-stone-900 mb-8">Send us a Message</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>

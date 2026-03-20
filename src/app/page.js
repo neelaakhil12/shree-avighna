@@ -267,7 +267,7 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
 
   return (
-    <div className="flex flex-col gap-12 pb-12">
+    <div className="flex flex-col gap-12 md:gap-20 pb-12 md:pb-24 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative w-full overflow-hidden h-[60vh] md:h-[75vh]">
         <img 
@@ -302,8 +302,8 @@ export default function Home() {
       </section>
 
       {/* Products Showcase */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" id="products">
-        <div className="flex justify-between items-end mb-6" data-aos="fade-up">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 md:py-24" id="products">
+        <div className="flex justify-between items-end mb-8 md:mb-16" data-aos="fade-up">
           <div>
             <h2 className="text-3xl font-bold text-stone-900 mb-2">Our Products</h2>
             <p className="text-stone-500">Pure, healthy, and delivered fresh.</p>
@@ -337,9 +337,9 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-stone-50 py-10" id="benefits">
+      <section className="bg-stone-50 py-12 md:py-24" id="benefits">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8" data-aos="zoom-in">
+          <div className="text-center mb-8 md:mb-16" data-aos="zoom-in">
             <h2 className="text-4xl font-bold text-stone-900 mb-4">Why Choose Shree Avigna?</h2>
             <p className="text-stone-500 max-w-2xl mx-auto">We are committed to delivering the highest quality edible oils through traditional and natural methods.</p>
           </div>
@@ -416,8 +416,8 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full" id="contact">
-        <div className="text-center mb-8" data-aos="fade-up">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 md:py-24" id="contact">
+        <div className="text-center mb-8 md:mb-16" data-aos="fade-up">
           <h2 className="text-4xl font-bold text-stone-900 mb-4">Get in Touch</h2>
           <p className="text-stone-500">Have questions? We're here to help.</p>
         </div>
@@ -540,12 +540,12 @@ export default function Home() {
 
       {/* CTA Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="bg-secondary rounded-[3rem] p-8 md:p-12 text-white relative overflow-hidden flex flex-col items-center text-center" data-aos="flip-up">
+        <div className="bg-secondary rounded-[3rem] p-12 md:p-20 text-white relative overflow-hidden flex flex-col items-center text-center" data-aos="flip-up">
           <div className="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-black/5 rounded-full translate-x-1/3 translate-y-1/3" />
           
           <h2 className="text-4xl md:text-5xl font-bold mb-6 relative z-10">Ready to Switch to <br /> Healthy Living?</h2>
-          <p className="text-green-100 max-w-xl mb-6 relative z-10">Start your journey towards health today with our pure, wood-pressed oils. Delivered straight to your doorstep.</p>
+          <p className="text-green-100 max-w-xl mb-10 relative z-10">Start your journey towards health today with our pure, wood-pressed oils. Delivered straight to your doorstep.</p>
           <Link href="/products" className="btn-primary py-4 px-10 text-lg relative z-10 border-2 border-primary">
             Start Shopping Now
           </Link>

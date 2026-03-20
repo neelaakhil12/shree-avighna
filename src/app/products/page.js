@@ -190,8 +190,8 @@ const allProducts = [
 
 export default function ProductsPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-6" data-aos="fade-up">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">
+      <div className="mb-8 md:mb-16" data-aos="fade-up">
         <h1 className="text-4xl font-bold text-stone-900 mb-4">Our Products</h1>
         <p className="text-stone-500 max-w-2xl">
           Browse our collection of 100% natural, wood cold-pressed edible oils and extracts. Pure, healthy, and delivered fresh.

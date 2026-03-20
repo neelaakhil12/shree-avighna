@@ -281,7 +281,7 @@ export default function Home() {
               <span className="inline-block bg-primary/20 backdrop-blur-sm px-4 py-1 rounded-full text-primary font-bold text-sm mb-6 border border-primary/30">
                 Purity in Every Drop
               </span>
-              <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6 leading-tight text-white">
+              <h1 className="text-3xl md:text-7xl font-bold mb-4 md:mb-6 leading-tight text-white">
                 Natural Wood <br />
                 Cold Pressed Oils
               </h1>

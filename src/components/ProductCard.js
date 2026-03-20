@@ -101,12 +101,12 @@ const ProductCard = ({ product }) => {
               {availableSizes.length > 1 && (
                 <div className="mb-8">
                   <h4 className="text-sm font-bold text-stone-500 uppercase tracking-widest mb-4">Select Size</h4>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2 md:gap-3">
                     {availableSizes.map((size) => (
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
-                        className={`px-6 py-3 rounded-xl font-bold transition-all border-2 ${
+                        className={`px-4 py-2 md:px-6 md:py-3 rounded-xl font-bold transition-all border-2 text-sm md:text-base ${
                           selectedSize === size 
                             ? 'border-secondary bg-secondary text-white shadow-lg' 
                             : 'border-stone-100 bg-stone-50 text-stone-600 hover:border-stone-200'
@@ -172,7 +172,7 @@ const ProductCard = ({ product }) => {
           </div>
 
           {availableSizes.length > 1 && (
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-1.5 mb-4">
               {availableSizes.map((size) => (
                 <button
                   key={size}
@@ -180,7 +180,7 @@ const ProductCard = ({ product }) => {
                     e.stopPropagation();
                     setSelectedSize(size);
                   }}
-                  className={`px-2 py-1 rounded-md text-[10px] font-bold transition-all border ${
+                  className={`px-1.5 py-1 rounded-md text-[9px] font-bold transition-all border ${
                     selectedSize === size 
                       ? 'border-secondary bg-secondary text-white' 
                       : 'border-stone-100 bg-stone-50 text-stone-500 hover:border-stone-200'

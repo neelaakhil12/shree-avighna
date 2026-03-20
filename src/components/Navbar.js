@@ -35,7 +35,7 @@ const Navbar = () => {
             <img
               src="/logo.png?v=2"
               alt="Shree Avigna Logo"
-              className="h-14 md:h-18 w-auto object-contain"
+              className="h-12 md:h-18 w-auto object-contain"
             />
           </Link>
 

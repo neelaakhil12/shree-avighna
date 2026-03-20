@@ -30,7 +30,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center -ml-2 md:ml-0">
+          <Link href="/" className="flex items-center -ml-4 md:ml-0">
             <img
               src="/logo.png?v=2"
               alt="Shree Avigna Logo"

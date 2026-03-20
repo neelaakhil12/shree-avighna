@@ -118,15 +118,15 @@ export default function About() {
   const [openFaq, setOpenFaq] = useState(null);
 
   return (
-    <div className="flex flex-col gap-24 pb-24">
+    <div className="flex flex-col gap-12 pb-12">
       {/* Hero Section */}
-      <section className="relative bg-stone-100 py-24 overflow-hidden">
+      <section className="relative bg-stone-100 py-12 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-64 h-64 bg-primary rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-aos="fade-up">
-          <h1 className="text-4xl md:text-6xl font-extrabold text-stone-900 mb-6 tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-stone-900 mb-4 tracking-tight">
             Shree Avighna – <span className="text-secondary italic">Crafted by Tradition,</span> <br className="hidden md:block" /> Trusted by Families
           </h1>
           <p className="text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed font-medium">
@@ -137,7 +137,7 @@ export default function About() {
 
       {/* About Description */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full -mt-12">
-        <div className="bg-white rounded-3xl shadow-xl p-8 md:p-16 border border-stone-100" data-aos="fade-up">
+        <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12 border border-stone-100" data-aos="fade-up">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg">
               <Image 
@@ -164,7 +164,7 @@ export default function About() {
 
       {/* Why Choose Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="text-center mb-16" data-aos="fade-up">
+        <div className="text-center mb-8" data-aos="fade-up">
           <h2 className="text-3xl md:text-5xl font-bold text-stone-900 mb-4">Why Choose Shree Avighna</h2>
           <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
         </div>
@@ -190,9 +190,9 @@ export default function About() {
       </section>
 
       {/* FAQ Section */}
-      <section className="bg-stone-50 py-24">
+      <section className="bg-stone-50 py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="text-center mb-16" data-aos="fade-up">
+          <div className="text-center mb-8" data-aos="fade-up">
             <h2 className="text-3xl md:text-5xl font-bold text-stone-900 mb-4">FAQ's</h2>
             <p className="text-stone-500">Everything you need to know about our products & process.</p>
           </div>

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowLeftIcon, DocumentTextIcon, ScaleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 
 const Section = ({ title, icon: Icon, children }) => (
-  <div className="mb-12">
+  <div className="mb-8">
     <div className="flex items-center gap-3 mb-4">
       <div className="w-10 h-10 bg-stone-100 rounded-xl flex items-center justify-center text-secondary">
         <Icon className="w-6 h-6" />
@@ -22,9 +22,9 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-stone-50 border-b border-stone-100 py-16">
+      <div className="bg-stone-50 border-b border-stone-100 py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <Link href="/" className="inline-flex items-center gap-2 text-stone-500 hover:text-stone-900 transition-colors mb-8 font-medium">
+          <Link href="/" className="inline-flex items-center gap-2 text-stone-500 hover:text-stone-900 transition-colors mb-4 font-medium">
             <ArrowLeftIcon className="w-4 h-4" /> Back to Home
           </Link>
           <h1 className="text-4xl md:text-5xl font-black text-stone-900 mb-4 uppercase tracking-tight">Terms of Service</h1>
@@ -33,7 +33,7 @@ export default function TermsPage() {
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10">
         <Section title="Acceptance of Terms" icon={ScaleIcon}>
           <p>By accessing and using this website, you accept and agree to be bound by the terms and provision of this agreement. Our products are 100% natural, and their shelf life is dependent on proper storage as indicated on the labels.</p>
         </Section>

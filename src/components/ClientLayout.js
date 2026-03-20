@@ -49,7 +49,7 @@ export default function ClientLayout({ children }) {
       
       <div className={hasEntered ? "opacity-100" : "opacity-0 pointer-events-none"}>
         <Navbar />
-        <main className="min-h-screen pt-28">
+        <main className="min-h-screen pt-[80px] md:pt-[112px]">
           {children}
         </main>
         

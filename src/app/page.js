@@ -267,7 +267,7 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
 
   return (
-    <div className="flex flex-col gap-12 md:gap-20 pb-12 md:pb-24 overflow-x-hidden">
+    <div className="flex flex-col gap-8 md:gap-20 pb-12 md:pb-24 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative w-full overflow-hidden h-[60vh] md:h-[75vh]">
         <img 
@@ -302,8 +302,8 @@ export default function Home() {
       </section>
 
       {/* Products Showcase */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 md:py-24" id="products">
-        <div className="flex justify-between items-end mb-8 md:mb-16" data-aos="fade-up">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 md:py-24" id="products">
+        <div className="flex justify-between items-end mb-6 md:mb-16" data-aos="fade-up">
           <div>
             <h2 className="text-3xl font-bold text-stone-900 mb-2">Our Products</h2>
             <p className="text-stone-500">Pure, healthy, and delivered fresh.</p>
@@ -337,9 +337,9 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-stone-50 py-12 md:py-24" id="benefits">
+      <section className="bg-stone-50 py-8 md:py-24" id="benefits">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 md:mb-16" data-aos="zoom-in">
+          <div className="text-center mb-6 md:mb-16" data-aos="zoom-in">
             <h2 className="text-4xl font-bold text-stone-900 mb-4">Why Choose Shree Avigna?</h2>
             <p className="text-stone-500 max-w-2xl mx-auto">We are committed to delivering the highest quality edible oils through traditional and natural methods.</p>
           </div>
@@ -416,8 +416,8 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-12 md:py-24" id="contact">
-        <div className="text-center mb-8 md:mb-16" data-aos="fade-up">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 md:py-24" id="contact">
+        <div className="text-center mb-6 md:mb-16" data-aos="fade-up">
           <h2 className="text-4xl font-bold text-stone-900 mb-4">Get in Touch</h2>
           <p className="text-stone-500">Have questions? We're here to help.</p>
         </div>
@@ -453,9 +453,9 @@ export default function Home() {
           </div>
         </div>
       </section>
-      {/* Legal Section */}
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full" id="legal">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* FAQ & Policy Preview */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 md:py-24" id="legal">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
           {/* Privacy Section */}
           <div className="bg-stone-50 p-8 rounded-3xl border border-stone-200">
             <div className="flex items-center gap-3 mb-6">

@@ -36,9 +36,9 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pb-12 md:pb-24">
+    <div className="pb-8 md:pb-24">
       {/* Header */}
-      <section className="bg-stone-50 py-12 md:py-20 border-b border-stone-200">
+      <section className="bg-stone-50 py-8 md:py-20 border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-aos="fade-up">
           <h1 className="text-4xl md:text-6xl font-bold text-stone-900 mb-4 md:mb-6">Contact Us</h1>
           <p className="text-lg text-stone-600 max-w-2xl mx-auto">

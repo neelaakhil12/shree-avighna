@@ -269,11 +269,10 @@ export default function Home() {
   return (
     <div className="flex flex-col gap-8 md:gap-10 pb-8 md:pb-12 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="w-full max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 mt-6 md:mt-12">
+      <section className="w-full max-w-[1760px] mx-auto px-0 sm:px-6 lg:px-8 mt-6 md:mt-12">
         <Link 
           href="/products" 
-          className="block relative w-full overflow-hidden rounded-2xl shadow-xl group"
-          style={{ aspectRatio: '1760/627', maxHeight: '627px' }}
+          className="block relative w-full overflow-hidden rounded-none sm:rounded-2xl shadow-xl group aspect-[3/2] sm:aspect-[16/9] md:aspect-[1760/627] max-h-[627px]"
         >
           <img 
             src="/hero-banner.png" 
@@ -281,11 +280,14 @@ export default function Home() {
             className="w-full h-full object-cover object-center block transition-transform duration-700 group-hover:scale-105"
           />
           {/* Tagline Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent flex flex-col justify-end items-center pb-6 md:pb-12 px-4 z-10 pointer-events-none">
-            <div className="w-full flex justify-center">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end items-center pb-8 md:pb-16 px-4 z-10 pointer-events-none">
+            <div className="w-full flex flex-col items-center gap-3 md:gap-6 animate-fade-in-up">
               <h2 className="typewriter-text text-white text-xs sm:text-sm md:text-xl font-bold tracking-[0.25em] md:tracking-[0.4em] uppercase drop-shadow-xl text-center">
                 100% Pure • Natural • Wood-Pressed
               </h2>
+              <div className="inline-flex items-center gap-2 bg-primary text-stone-900 font-bold px-8 py-3 rounded-full transition-all hover:bg-yellow-500 hover:scale-105 active:scale-95 text-[10px] sm:text-xs md:text-sm uppercase tracking-wider shadow-lg">
+                Shop Now <ArrowRightIcon className="w-3 h-3 sm:w-4 h-4" />
+              </div>
             </div>
           </div>
         </Link>

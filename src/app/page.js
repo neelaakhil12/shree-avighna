@@ -282,7 +282,7 @@ export default function Home() {
           {/* Tagline Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end items-center pb-8 md:pb-16 px-4 z-10 pointer-events-none">
             <div className="w-full flex flex-col items-center gap-3 md:gap-6 animate-fade-in-up">
-              <h2 className="typewriter-text text-white text-xs sm:text-sm md:text-xl font-bold tracking-[0.25em] md:tracking-[0.4em] uppercase drop-shadow-xl text-center">
+              <h2 className="typewriter-text text-white text-[10px] sm:text-sm md:text-xl font-bold tracking-[0.15em] sm:tracking-[0.25em] md:tracking-[0.4em] uppercase drop-shadow-xl text-center">
                 100% Pure • Natural • Wood-Pressed
               </h2>
               <div className="inline-flex items-center gap-2 bg-primary text-stone-900 font-bold px-8 py-3 rounded-full transition-all hover:bg-yellow-500 hover:scale-105 active:scale-95 text-[10px] sm:text-xs md:text-sm uppercase tracking-wider shadow-lg">

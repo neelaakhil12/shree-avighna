@@ -8,29 +8,12 @@ const SplashScreen = ({ onEnter }) => {
       initial={{ opacity: 1 }}
       exit={{ y: "-100%" }}
       transition={{ duration: 1.2, ease: [0.45, 0, 0.55, 1] }}
-      className="fixed inset-0 z-[100] bg-stone-950 flex flex-col items-center justify-center p-4 overflow-hidden"
+      className="fixed inset-0 z-[100] bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-500 splash-bg-animate flex flex-col items-center justify-center p-4 overflow-hidden"
     >
-      {/* Background Glows */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none -z-10">
-        <div className="absolute -top-1/4 -left-1/4 w-full h-full bg-secondary/10 rounded-full blur-[150px]"></div>
-        <div className="absolute -bottom-1/4 -right-1/4 w-full h-full bg-primary/10 rounded-full blur-[150px]"></div>
-      </div>
-
       <div className="max-w-xl w-full text-center space-y-12" data-aos="fade-up">
         {/* Logo and Branding Area */}
         <div className="space-y-8">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="relative inline-block"
-          >
-            <img
-              src="/logo.png?v=2"
-              alt="Shree Avighna Oils"
-              className="h-32 md:h-48 mx-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.05)]"
-            />
-          </motion.div>
+
 
           <div className="space-y-4">
             <motion.h1
@@ -50,11 +33,11 @@ const SplashScreen = ({ onEnter }) => {
               transition={{ delay: 0.8, duration: 1 }}
               className="flex items-center justify-center gap-4"
             >
-              <div className="h-[1px] w-12 bg-stone-800"></div>
-              <p className="text-stone-400 text-lg md:text-xl font-medium tracking-[0.3em] uppercase">
-                100% Natural
+              <div className="h-[1px] w-8 bg-stone-800"></div>
+              <p className="text-stone-800 text-sm md:text-base font-medium tracking-[0.2em] uppercase">
+                Crafted by Tradition • Trusted by Families
               </p>
-              <div className="h-[1px] w-12 bg-stone-800"></div>
+              <div className="h-[1px] w-8 bg-stone-800"></div>
             </motion.div>
           </div>
         </div>
@@ -80,11 +63,6 @@ const SplashScreen = ({ onEnter }) => {
           </button>
         </motion.div>
       </div>
-
-      {/* Floating particles or subtle elements could go here */}
-      <footer className="absolute bottom-12 text-stone-600 text-sm tracking-widest uppercase">
-        Crafted by Tradition • Trusted by Families
-      </footer>
     </motion.div>
   );
 };

@@ -22,7 +22,7 @@ export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-stone-50 border-b border-stone-100 py-8 md:py-16">
+      <div className="bg-stone-50 border-b border-stone-100 py-6 md:py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <Link href="/" className="inline-flex items-center gap-2 text-stone-500 hover:text-stone-900 transition-colors mb-8 font-medium">
             <ArrowLeftIcon className="w-4 h-4" /> Back to Home
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-12">
         <Section title="Information We Collect" icon={ShieldCheckIcon}>
           <p>We collect information you provide directly to us when you make a purchase, create an account, or contact us. This includes your name, email address, shipping address, and phone number.</p>
           <p>We do not store your credit card information. All payments are processed through secure, third-party payment gateways like Razorpay or Stripe.</p>

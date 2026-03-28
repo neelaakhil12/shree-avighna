@@ -267,42 +267,32 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
 
   return (
-    <div className="flex flex-col gap-8 md:gap-20 pb-12 md:pb-24 overflow-x-hidden">
+    <div className="flex flex-col gap-8 md:gap-10 pb-8 md:pb-12 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative w-full overflow-hidden h-[60vh] md:h-[75vh]">
-        <img 
-          src="/hero-v3.png" 
-          alt="Natural Wood Cold Pressed Oils" 
-          className="w-full h-full object-cover block brightness-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent flex items-center z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white w-full">
-            <div className="max-w-2xl" data-aos="fade-up">
-              <span className="inline-block bg-primary/20 backdrop-blur-sm px-4 py-1 rounded-full text-primary font-bold text-sm mb-6 border border-primary/30">
-                Purity in Every Drop
-              </span>
-              <h1 className="text-3xl md:text-7xl font-bold mb-4 md:mb-6 leading-tight text-white">
-                Natural Wood <br />
-                Cold Pressed Oils
-              </h1>
-              <p className="hidden md:block text-lg md:text-xl text-stone-200 mb-10 leading-relaxed">
-                Experience the richness of traditional extraction. We use natural wood presses to bring you the purest, most nutritious oils for your family.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/products" className="btn-primary py-3 md:py-4 px-6 md:px-8 text-base md:text-lg">
-                  Explore Products
-                </Link>
-                <Link href="/about" className="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-bold py-3 md:py-4 px-6 md:px-8 rounded-full transition-all border border-white/30 flex items-center gap-2 text-base md:text-lg">
-                  Process
-                </Link>
-              </div>
+      <section className="w-full max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 mt-6 md:mt-12">
+        <Link 
+          href="/products" 
+          className="block relative w-full overflow-hidden rounded-2xl shadow-xl group"
+          style={{ aspectRatio: '1760/627', maxHeight: '627px' }}
+        >
+          <img 
+            src="/hero-banner.png" 
+            alt="Natural Wood Cold Pressed Oils" 
+            className="w-full h-full object-cover object-center block transition-transform duration-700 group-hover:scale-105"
+          />
+          {/* Tagline Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent flex flex-col justify-end items-center pb-6 md:pb-12 px-4 z-10 pointer-events-none">
+            <div className="w-full flex justify-center">
+              <h2 className="typewriter-text text-white text-xs sm:text-sm md:text-xl font-bold tracking-[0.25em] md:tracking-[0.4em] uppercase drop-shadow-xl text-center">
+                100% Pure • Natural • Wood-Pressed
+              </h2>
             </div>
           </div>
-        </div>
+        </Link>
       </section>
 
       {/* Products Showcase */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 md:py-24" id="products">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-2 md:pt-4 pb-6 md:pb-12" id="products">
         <div className="flex justify-between items-end mb-6 md:mb-16" data-aos="fade-up">
           <div>
             <h2 className="text-3xl font-bold text-stone-900 mb-2">Our Products</h2>
@@ -337,7 +327,7 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-stone-50 py-8 md:py-24" id="benefits">
+      <section className="bg-stone-50 py-6 md:py-12" id="benefits">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6 md:mb-16" data-aos="zoom-in">
             <h2 className="text-4xl font-bold text-stone-900 mb-4">Why Choose Shree Avigna?</h2>
@@ -416,7 +406,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 md:py-24" id="contact">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-6 md:py-12" id="contact">
         <div className="text-center mb-6 md:mb-16" data-aos="fade-up">
           <h2 className="text-4xl font-bold text-stone-900 mb-4">Get in Touch</h2>
           <p className="text-stone-500">Have questions? We're here to help.</p>

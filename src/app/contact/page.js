@@ -36,9 +36,9 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="pb-8 md:pb-24">
+    <div className="pb-6 md:pb-12">
       {/* Header */}
-      <section className="bg-stone-50 py-8 md:py-20 border-b border-stone-200">
+      <section className="bg-stone-50 py-6 md:py-12 border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" data-aos="fade-up">
           <h1 className="text-4xl md:text-6xl font-bold text-stone-900 mb-4 md:mb-6">Contact Us</h1>
           <p className="text-lg text-stone-600 max-w-2xl mx-auto">
@@ -47,7 +47,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 md:mt-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Contact Details */}
           <div className="lg:col-span-1 space-y-6">

@@ -26,15 +26,15 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed w-full z-50 bg-stone-900 shadow-md py-5">
+    <nav className="fixed w-full z-50 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 shadow-md py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center -ml-4 md:ml-0">
             <img
-              src="/logo.png?v=2"
+              src="/splash-logo.png?v=1"
               alt="Shree Avigna Logo"
-              className="h-12 md:h-18 w-auto object-contain"
+              className="h-14 md:h-20 w-auto object-contain"
             />
           </Link>
 
@@ -59,9 +59,7 @@ const Navbar = () => {
               )}
             </Link>
 
-            <Link href="/admin" className="text-xs text-stone-500 hover:text-stone-300 underline">
-              Admin
-            </Link>
+
           </div>
 
           {/* Mobile menu button */}
@@ -86,25 +84,19 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-stone-900 border-t border-stone-700 animate-fade-in">
+        <div className="md:hidden bg-yellow-500 border-t border-yellow-600 animate-fade-in">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="block px-3 py-2 text-base font-medium text-stone-300 hover:text-primary hover:bg-stone-800 rounded-md"
+                className="block px-3 py-2 text-base font-bold text-stone-900 hover:text-green-800 hover:bg-yellow-400 rounded-md"
               >
                 {link.name}
               </Link>
             ))}
-            <Link
-              href="/admin"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="block px-3 py-2 text-sm text-stone-400 underline"
-            >
-              Admin Panel
-            </Link>
+
           </div>
         </div>
       )}

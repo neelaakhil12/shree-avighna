@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fffdf5; /* Light Cream */
+  --background: #fffdf5; /* Solid Light Cream */
   --foreground: #1c1917; /* Dark Stone */
   --primary: #F4C430;   /* Saffron Yellow */
   --secondary: #15803d; /* Forest Green */
@@ -55,4 +55,33 @@ body {
 }
 [data-aos].aos-animate {
   pointer-events: auto;
+}
+
+@keyframes splashGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.splash-bg-animate {
+  background-size: 400% 400%;
+  animation: splashGradient 8s ease infinite;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+.typewriter-text {
+  overflow: hidden;
+  white-space: nowrap;
+  margin: 0 auto;
+  animation: typing 2.5s steps(35, end) forwards;
 }

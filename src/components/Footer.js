@@ -2,16 +2,16 @@ import Link from 'next/link';
 
 const Footer = () => {
   return (
-    <footer className="bg-stone-900 text-stone-300 pt-16 pb-8">
+    <footer className="bg-white text-stone-600 pt-16 pb-8 border-t border-stone-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand & Mission */}
           <div className="col-span-1 md:col-span-1">
             <div className="mb-6">
               <img
-                src="/logo.png?v=2"
+                src="/splash-logo.png?v=1"
                 alt="Shree Avigna Logo"
-                className="h-10 md:h-12 w-auto object-contain"
+                className="h-12 md:h-16 w-auto object-contain"
               />
             </div>
             <p className="text-sm leading-relaxed mb-6">
@@ -21,51 +21,51 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-bold mb-6">Quick Links</h3>
+            <h3 className="text-stone-900 font-bold mb-6">Quick Links</h3>
             <ul className="space-y-4 text-sm">
-              <li><Link href="/" className="hover:text-primary transition-colors">Home</Link></li>
-              <li><Link href="/products" className="hover:text-primary transition-colors">Our Products</Link></li>
-              <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-              <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+              <li><Link href="/" className="hover:text-secondary transition-colors">Home</Link></li>
+              <li><Link href="/products" className="hover:text-secondary transition-colors">Our Products</Link></li>
+              <li><Link href="/about" className="hover:text-secondary transition-colors">About Us</Link></li>
+              <li><Link href="/contact" className="hover:text-secondary transition-colors">Contact</Link></li>
             </ul>
           </div>
 
           {/* Products */}
           <div>
-            <h3 className="text-white font-bold mb-6">Popular Products</h3>
+            <h3 className="text-stone-900 font-bold mb-6">Popular Products</h3>
             <ul className="space-y-4 text-sm">
-              <li><Link href="/products" className="hover:text-primary transition-colors">Groundnut Oil</Link></li>
-              <li><Link href="/products" className="hover:text-primary transition-colors">Sesame Oil</Link></li>
-              <li><Link href="/products" className="hover:text-primary transition-colors">Sunflower Oil</Link></li>
-              <li><Link href="/products" className="hover:text-primary transition-colors">Badam Oil</Link></li>
+              <li><Link href="/products" className="hover:text-secondary transition-colors">Groundnut Oil</Link></li>
+              <li><Link href="/products" className="hover:text-secondary transition-colors">Sesame Oil</Link></li>
+              <li><Link href="/products" className="hover:text-secondary transition-colors">Sunflower Oil</Link></li>
+              <li><Link href="/products" className="hover:text-secondary transition-colors">Badam Oil</Link></li>
             </ul>
           </div>
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-white font-bold mb-6">Contact Us</h3>
+            <h3 className="text-stone-900 font-bold mb-6">Contact Us</h3>
             <ul className="space-y-4 text-sm">
               <li className="flex flex-col">
-                <span className="text-stone-500 uppercase text-[10px] font-bold tracking-widest">Email</span>
-                <span>info@shreeavigna.com</span>
+                <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest">Email</span>
+                <span className="text-stone-900">info@shreeavigna.com</span>
               </li>
               <li className="flex flex-col">
-                <span className="text-stone-500 uppercase text-[10px] font-bold tracking-widest">Phone</span>
-                <span>+91 91234 56789</span>
+                <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest">Phone</span>
+                <span className="text-stone-900">+91 91234 56789</span>
               </li>
               <li className="flex flex-col">
-                <span className="text-stone-500 uppercase text-[10px] font-bold tracking-widest">Address</span>
-                <span>5th Floor, Swathi Plaza, Leela Nagar, Ameerpet, Hyderabad, 500016</span>
+                <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest">Address</span>
+                <span className="text-stone-900">5th Floor, Swathi Plaza, Leela Nagar, Ameerpet, Hyderabad, 500016</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-stone-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+        <div className="border-t border-stone-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
           <p>© {new Date().getFullYear()} Shree Avigna Natural Oils. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-stone-900 transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-stone-900 transition-colors">Terms of Service</Link>
           </div>
         </div>
       </div>

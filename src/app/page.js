@@ -329,21 +329,21 @@ export default function Home() {
       </section>
 
       {/* Benefits Section */}
-      <section className="bg-stone-50 py-6 md:py-12" id="benefits">
+      <section className="bg-[#3C2A21] py-12 md:py-20" id="benefits">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-6 md:mb-16" data-aos="zoom-in">
-            <h2 className="text-4xl font-bold text-stone-900 mb-4">Why Choose Shree Avigna?</h2>
-            <p className="text-stone-500 max-w-2xl mx-auto">We are committed to delivering the highest quality edible oils through traditional and natural methods.</p>
+          <div className="text-center mb-12 md:mb-16" data-aos="zoom-in">
+            <h2 className="text-4xl font-bold text-stone-50 mb-4 font-serif">Why Choose Shree Avigna?</h2>
+            <p className="text-stone-300 max-w-2xl mx-auto">We are committed to delivering the highest quality edible oils through traditional and natural methods.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {benefits.map((benefit, idx) => (
-              <div key={benefit.title} className="text-center" data-aos="fade-up" data-aos-delay={idx * 100}>
-                <div className="w-16 h-16 bg-white rounded-2xl shadow-sm border border-stone-100 flex items-center justify-center mx-auto mb-6 text-secondary">
+              <div key={benefit.title} className="text-center group" data-aos="fade-up" data-aos-delay={idx * 100}>
+                <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary group-hover:bg-primary group-hover:text-stone-900 transition-all duration-300">
                   <benefit.icon className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold text-stone-900 mb-3">{benefit.title}</h3>
-                <p className="text-stone-500 text-sm leading-relaxed">{benefit.desc}</p>
+                <h3 className="text-xl font-bold text-stone-50 mb-3">{benefit.title}</h3>
+                <p className="text-stone-300 text-sm leading-relaxed">{benefit.desc}</p>
               </div>
             ))}
           </div>
@@ -399,7 +399,7 @@ export default function Home() {
           <div className="mt-12 text-center" data-aos="fade-up">
             <Link 
               href="/about"
-              className="group inline-flex items-center gap-2 font-bold text-secondary hover:text-secondary/80 transition-all"
+              className="group inline-flex items-center gap-2 font-bold text-primary hover:text-white transition-all text-sm uppercase tracking-widest"
             >
               Learn More About Our Process <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>

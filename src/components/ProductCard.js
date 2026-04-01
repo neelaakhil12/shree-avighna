@@ -9,8 +9,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
-  const availableSizes = Object.keys(product.prices || {});
-  const [selectedSize, setSelectedSize] = React.useState(availableSizes.includes('1lt') ? '1lt' : availableSizes[0]);
+  const availableSizes = Object.keys(product?.prices || {});
+  const [selectedSize, setSelectedSize] = React.useState(availableSizes.includes('1lt') ? '1lt' : (availableSizes[0] || ''));
   const [showDetails, setShowDetails] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
 
@@ -56,7 +56,7 @@ const ProductCard = ({ product }) => {
             <div className="w-full md:w-1/2 p-6 md:p-10 flex items-center justify-center bg-stone-50">
               <div className="relative w-full aspect-square md:h-full max-h-[500px] shadow-2xl rounded-sm overflow-hidden">
                 <Image
-                  src={product.image || 'https://via.placeholder.com/600x600?text=Premium+Oil'}
+                  src={product.image || product.image_url || 'https://via.placeholder.com/600x600?text=Premium+Oil'}
                   alt={product.name}
                   fill
                   className="object-cover"
@@ -121,7 +121,7 @@ const ProductCard = ({ product }) => {
 
               <div className="mt-auto flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-stone-100">
                 <div className="text-4xl font-black text-stone-900">
-                  ₹{product.prices[selectedSize]}
+                  ₹{product?.prices?.[selectedSize] || '0'}
                 </div>
                 <button 
                   onClick={() => {
@@ -145,7 +145,7 @@ const ProductCard = ({ product }) => {
       <div className="organic-card group flex flex-col h-full overflow-hidden">
         <div className="relative h-56 w-full overflow-hidden bg-stone-100">
           <Image
-            src={product.image || 'https://via.placeholder.com/400x400?text=Premium+Oil'}
+            src={product.image || product.image_url || 'https://via.placeholder.com/400x400?text=Premium+Oil'}
             alt={product.name}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -167,7 +167,7 @@ const ProductCard = ({ product }) => {
               {product.name}
             </h3>
             <span className="font-bold text-lg text-stone-900">
-              ₹{product.prices[selectedSize]}
+              ₹{product?.prices?.[selectedSize] || '0'}
             </span>
           </div>
 

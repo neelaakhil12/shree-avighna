@@ -1,24 +1,89 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { CheckCircleIcon, CreditCardIcon, BuildingLibraryIcon, RocketLaunchIcon } from '@heroicons/react/24/solid';
+
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 
 export default function CheckoutPage() {
   const { cartTotal, clearCart } = useCart();
   const [isOrdered, setIsOrdered] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [shippingData, setShippingData] = useState({
+    firstName: '',
+    lastName: '',
+    address: '',
+    city: '',
+    phone: ''
+  });
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate payment processing
-    setTimeout(() => {
+
+    const res = await loadRazorpayScript();
+
+    if (!res) {
+      alert("Razorpay SDK failed to load. Check your internet connection.");
       setLoading(false);
-      setIsOrdered(true);
-      clearCart();
-    }, 2000);
+      return;
+    }
+
+    try {
+      // 1. Create order on server
+      const orderRes = await fetch("/api/razorpay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: cartTotal }),
+      });
+      const order = await orderRes.json();
+
+      if (order.error) throw new Error(order.error);
+
+      // 2. Open Razorpay Widget
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: "INR",
+        name: "Shree Avigna Natural Oils",
+        description: "Pure Wood-Pressed Oils Purchase",
+        image: "/splash-logo.png",
+        order_id: order.id,
+        handler: function (response) {
+          // Payment Successful
+          setLoading(false);
+          setIsOrdered(true);
+          clearCart();
+        },
+        prefill: {
+          name: `${shippingData.firstName} ${shippingData.lastName}`,
+          contact: shippingData.phone,
+        },
+        theme: {
+          color: "#055b41", // Shree Avigna Primary Green
+        },
+        modal: {
+          ondismiss: () => setLoading(false),
+        },
+      };
+
+      const paymentObject = new window.Razorpay(options);
+      paymentObject.open();
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong with the payment. Please try again.");
+      setLoading(false);
+    }
   };
 
   if (isOrdered) {
@@ -58,23 +123,23 @@ export default function CheckoutPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-bold text-stone-700 mb-2">First Name</label>
-                <input type="text" required className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="John" />
+                <input type="text" required value={shippingData.firstName} onChange={(e) => setShippingData({...shippingData, firstName: e.target.value})} className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="John" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-stone-700 mb-2">Last Name</label>
-                <input type="text" required className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="Doe" />
+                <input type="text" required value={shippingData.lastName} onChange={(e) => setShippingData({...shippingData, lastName: e.target.value})} className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="Doe" />
               </div>
               <div className="md:col-span-2">
                 <label className="block text-sm font-bold text-stone-700 mb-2">Full Address</label>
-                <textarea required rows="3" className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="Apt, Street, Area..."></textarea>
+                <textarea required rows="3" value={shippingData.address} onChange={(e) => setShippingData({...shippingData, address: e.target.value})} className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="Apt, Street, Area..."></textarea>
               </div>
               <div>
                 <label className="block text-sm font-bold text-stone-700 mb-2">City</label>
-                <input type="text" required className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="Bangalore" />
+                <input type="text" required value={shippingData.city} onChange={(e) => setShippingData({...shippingData, city: e.target.value})} className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="Bangalore" />
               </div>
               <div>
                 <label className="block text-sm font-bold text-stone-700 mb-2">Phone</label>
-                <input type="tel" required className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="+91 98765 43210" />
+                <input type="tel" required value={shippingData.phone} onChange={(e) => setShippingData({...shippingData, phone: e.target.value})} className="w-full px-5 py-4 rounded-xl border border-stone-200 bg-stone-50" placeholder="+91 98765 43210" />
               </div>
             </div>
           </div>
@@ -85,23 +150,15 @@ export default function CheckoutPage() {
               Payment Method
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <label className="relative border-2 border-stone-100 rounded-2xl p-6 cursor-pointer hover:border-secondary transition-all has-[:checked]:border-secondary has-[:checked]:bg-green-50/50">
+              <label className="relative border-2 border-primary rounded-2xl p-6 cursor-pointer bg-green-50/50">
                 <input type="radio" name="payment" className="absolute opacity-0" defaultChecked />
                 <div className="flex flex-col gap-4">
-                  <CreditCardIcon className="w-8 h-8 text-secondary" />
-                  <div>
-                    <p className="font-bold text-stone-900">Card Payment</p>
-                    <p className="text-xs text-stone-500">Stripe / Razorpay Secure</p>
+                  <div className="flex items-center gap-2">
+                    <img src="https://razorpay.com/favicon.ico" className="w-6 h-6" alt="Razorpay" />
+                    <p className="font-bold text-stone-900 leading-none">Instant Payment</p>
                   </div>
-                </div>
-              </label>
-              <label className="relative border-2 border-stone-100 rounded-2xl p-6 cursor-pointer hover:border-secondary transition-all has-[:checked]:border-secondary has-[:checked]:bg-green-50/50">
-                <input type="radio" name="payment" className="absolute opacity-0" />
-                <div className="flex flex-col gap-4">
-                  <BuildingLibraryIcon className="w-8 h-8 text-stone-400" />
                   <div>
-                    <p className="font-bold text-stone-900">Net Banking</p>
-                    <p className="text-xs text-stone-500">Supports all major banks</p>
+                    <p className="text-xs text-stone-500">Google Pay, PhonePe, Cards, Netbanking</p>
                   </div>
                 </div>
               </label>
@@ -131,17 +188,17 @@ export default function CheckoutPage() {
             
             <button 
               type="submit" 
-              disabled={loading}
+              disabled={loading || cartTotal === 0}
               className="btn-secondary w-full py-5 text-lg shadow-lg flex items-center justify-center gap-3 disabled:opacity-50"
             >
               {loading ? (
                 <span className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
               ) : (
-                <>Place Order <RocketLaunchIcon className="w-5 h-5" /></>
+                <>Pay & Order <RocketLaunchIcon className="w-5 h-5" /></>
               )}
             </button>
             <p className="text-[10px] text-stone-400 text-center mt-6 uppercase tracking-widest font-bold">
-              SSL Encrypted Checkout
+              Secure Transaction by Razorpay
             </p>
           </div>
         </div>

@@ -1,6 +1,10 @@
-import ProductCard from "@/components/ProductCard";
+"use client";
 
-const allProducts = [
+import React, { useState, useEffect } from 'react';
+import ProductCard from "@/components/ProductCard";
+import { supabase } from '@/lib/supabase';
+
+const hardcodedProducts = [
   {
     id: "groundnut-oil",
     name: "Groundnut Oil",
@@ -189,6 +193,28 @@ const allProducts = [
 ];
 
 export default function ProductsPage() {
+  const [products, setProducts] = useState(hardcodedProducts);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLiveProducts = async () => {
+      try {
+        const { data, error } = await supabase.from('products').select('*');
+        if (!error && data && data.length > 0) {
+          // If live products exist, prioritize them or show them alongside (User choice)
+          // For now, let's prepend live products to the hardcoded list
+          setProducts([...data, ...hardcodedProducts]);
+        }
+      } catch (err) {
+        console.error("Link error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLiveProducts();
+  }, []);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-10">
       <div className="mb-6 md:mb-16" data-aos="fade-up">
@@ -199,8 +225,8 @@ export default function ProductsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {allProducts.map((product, idx) => (
-          <div key={product.id} data-aos="fade-up" data-aos-delay={idx * 50}>
+        {products.filter(p => p && p.name && p.prices).map((product, idx) => (
+          <div key={product.id || idx} data-aos="fade-up" data-aos-delay={idx * 50}>
             <ProductCard product={product} />
           </div>
         ))}

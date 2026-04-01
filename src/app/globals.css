@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fffdf5; /* Solid Light Cream */
+  --background: #ffffff; /* Pure White */
   --foreground: #1c1917; /* Dark Stone */
   --primary: #F4C430;   /* Saffron Yellow */
   --secondary: #15803d; /* Forest Green */
@@ -16,7 +16,7 @@
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
-  --color-cream: #fffdf5;
+  --color-cream: #ffffff;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   

@@ -46,26 +46,36 @@ const Footer = () => {
             <h3 className="text-stone-900 font-bold mb-6">Contact Us</h3>
             <ul className="space-y-4 text-sm">
               <li className="flex flex-col">
-                <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest">Email</span>
+                <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest leading-none mb-1">Email</span>
                 <span className="text-stone-900">info@shreeavigna.com</span>
               </li>
               <li className="flex flex-col">
-                <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest">Phone</span>
+                <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest leading-none mb-1">Phone</span>
                 <span className="text-stone-900">+91 91234 56789</span>
               </li>
               <li className="flex flex-col">
-                <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest">Address</span>
+                <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest leading-none mb-1">Address</span>
                 <span className="text-stone-900">5th Floor, Swathi Plaza, Leela Nagar, Ameerpet, Hyderabad, 500016</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-stone-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-          <p>© {new Date().getFullYear()} Shree Avigna Natural Oils. All rights reserved.</p>
+        <div className="border-t border-stone-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-semibold">
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
+            <p className="text-stone-400">© {new Date().getFullYear()} Shree Avigna Natural Oils. All rights reserved.</p>
+            <span className="hidden md:block text-stone-200">|</span>
+            <Link 
+              href="https://www.codtechitsolutions.com/" 
+              target="_blank" 
+              className="text-stone-500 hover:text-stone-900 transition-colors flex items-center gap-1"
+            >
+              Developed by <span className="text-stone-900 font-black tracking-tight underline decoration-stone-200 underline-offset-4 hover:decoration-secondary">Codtech IT Solutions</span>
+            </Link>
+          </div>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-stone-900 transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-stone-900 transition-colors">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-secondary transition-colors uppercase tracking-widest text-[10px]">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-secondary transition-colors uppercase tracking-widest text-[10px]">Terms of Service</Link>
           </div>
         </div>
       </div>

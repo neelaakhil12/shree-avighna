@@ -120,7 +120,7 @@ export default function About() {
   return (
     <div className="flex flex-col gap-6 md:gap-12 pb-6 md:pb-12">
       {/* Hero Section */}
-      <section className="relative bg-stone-100 py-6 md:py-12 overflow-hidden">
+      <section className="relative bg-white py-6 md:py-12 overflow-hidden border-b border-stone-100">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 w-64 h-64 bg-primary rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full blur-3xl translate-x-1/2 translate-y-1/2"></div>
@@ -190,7 +190,7 @@ export default function About() {
       </section>
 
       {/* FAQ Section */}
-      <section className="bg-stone-50 py-6 md:py-12">
+      <section className="bg-white py-6 md:py-12 border-t border-stone-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center mb-8 md:mb-16" data-aos="fade-up">
             <h2 className="text-3xl md:text-5xl font-bold text-stone-900 mb-4">FAQ's</h2>

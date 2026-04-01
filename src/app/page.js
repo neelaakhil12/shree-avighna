@@ -275,7 +275,7 @@ export default function Home() {
           className="block relative w-full overflow-hidden rounded-none sm:rounded-2xl shadow-xl group aspect-[3/2] sm:aspect-[16/9] md:aspect-[1760/627] max-h-[627px]"
         >
           <img 
-            src="/hero-banner.png" 
+            src="/hero-v15.png" 
             alt="Natural Wood Cold Pressed Oils" 
             className="w-full h-full object-cover object-center block transition-transform duration-700 group-hover:scale-105"
           />

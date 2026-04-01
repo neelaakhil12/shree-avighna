@@ -19,38 +19,54 @@ const Section = ({ title, icon: Icon, children }) => (
 );
 
 export default function PrivacyPage() {
+  const points = [
+    { title: "Data Collection", desc: "We collect only essential details like your name, email, and shipping address to fulfill your orders efficiently." },
+    { title: "Secure Payments", desc: "All transactions are handled through trusted third-party gateways like Razorpay. We never see or store your card details." },
+    { title: "Financial Privacy", desc: "No sensitive financial information or credit card numbers are ever stored on our servers." },
+    { title: "Service Communication", desc: "Your contact details are used solely for order status updates and essential service-related messages." },
+    { title: "Marketing Preferences", desc: "You will only receive promotional updates if you explicitly opt-in to our newsletter." },
+    { title: "Data Protection", desc: "We maintain absolute non-disclosure. Your personal data is never shared with third-party marketing companies." },
+    { title: "Encryption Standards", desc: "We implement industry-standard SSL encryption to ensure your data remains secure during transmission." },
+    { title: "Cookie Usage", desc: "We use cookies only to enhance website performance, remember your preferences, and improve your shopping experience." },
+    { title: "User Rights", desc: "You have the full right to request access to, correction of, or deletion of your personal data at any time." },
+    { title: "Policy Updates", desc: "This policy is reviewed periodically to ensure it meets the latest security and legal standards." }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-stone-50 border-b border-stone-100 py-6 md:py-10">
+      <div className="bg-white border-b border-stone-100 py-6 md:py-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <Link href="/" className="inline-flex items-center gap-2 text-stone-500 hover:text-stone-900 transition-colors mb-8 font-medium">
             <ArrowLeftIcon className="w-4 h-4" /> Back to Home
           </Link>
           <h1 className="text-4xl md:text-5xl font-black text-stone-900 mb-4 uppercase tracking-tight">Privacy Policy</h1>
-          <p className="text-stone-500 text-lg">Last updated: March 2024. Your privacy is our priority.</p>
+          <p className="text-stone-500 text-lg">Our commitment to your security in 10 clear points.</p>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 md:py-12">
-        <Section title="Information We Collect" icon={ShieldCheckIcon}>
-          <p>We collect information you provide directly to us when you make a purchase, create an account, or contact us. This includes your name, email address, shipping address, and phone number.</p>
-          <p>We do not store your credit card information. All payments are processed through secure, third-party payment gateways like Razorpay or Stripe.</p>
-        </Section>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+          {points.map((point, idx) => (
+            <div key={idx} className="bg-stone-50 p-8 rounded-3xl border border-stone-100 hover:shadow-lg transition-all duration-300">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-10 h-10 bg-secondary text-white rounded-full flex items-center justify-center font-bold text-sm">
+                  {idx + 1}
+                </div>
+                <h2 className="text-xl font-bold text-stone-900">{point.title}</h2>
+              </div>
+              <p className="text-stone-600 leading-relaxed text-sm">
+                {point.desc}
+              </p>
+            </div>
+          ))}
+        </div>
 
-        <Section title="How We Use Your Info" icon={EyeIcon}>
-          <p>Your information is used solely to process orders, improve our service, and communicate with you about your purchases. We may also use your contact details to send you occasional updates about our natural oils, but only if you've opted in.</p>
-        </Section>
-
-        <Section title="Security & Protection" icon={LockClosedIcon}>
-          <p>We implement a variety of security measures to maintain the safety of your personal information. Your data is stored on secure servers and is never shared with third parties for marketing purposes.</p>
-        </Section>
-
-        <div className="bg-stone-900 rounded-3xl p-8 md:p-10 text-white text-center mt-8 md:mt-20">
-          <h3 className="text-2xl font-bold mb-4">Questions about your privacy?</h3>
-          <p className="text-stone-400 mb-8 max-w-md mx-auto">Our team is here to help you understand how we protect your data at Shree Avigna.</p>
-          <Link href="/contact" className="btn-primary py-4 px-10">
+        <div className="bg-stone-900 rounded-[3rem] p-8 md:p-16 text-white text-center">
+          <h3 className="text-3xl font-bold mb-4">Have Questions?</h3>
+          <p className="text-stone-400 mb-10 max-w-md mx-auto">If you need more details about our privacy practices, our support team is happy to help.</p>
+          <Link href="/contact" className="btn-primary py-4 px-12 text-lg">
             Contact Support
           </Link>
         </div>

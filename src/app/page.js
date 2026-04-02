@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import { 
@@ -23,8 +23,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Mock products for the home page showcase
-const featuredProducts = [
+import { supabase } from "@/lib/supabase";
+
+const initialFeaturedProducts = [
   {
     id: "groundnut-oil",
     name: "Groundnut Oil",
@@ -72,7 +73,7 @@ const benefits = [
   }
 ];
 
-const allProducts = [
+const initialAllProducts = [
   {
     id: "groundnut-oil",
     name: "Groundnut Oil",
@@ -222,6 +223,84 @@ const faqs = [
   }
 ];
 
+// Count-up animation component
+function CountUp({ target, suffix = '' }) {
+  const [count, setCount] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setHasAnimated(true);
+          const duration = 2000;
+          const startTime = performance.now();
+          const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.round(eased * target));
+            if (progress < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [hasAnimated, target]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
+// Typewriter animation component
+function TypeWriter({ text, speed = 35, delay = 0 }) {
+  const [displayed, setDisplayed] = useState('');
+  const [hasStarted, setHasStarted] = useState(false);
+  const [done, setDone] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasStarted) {
+          const t = setTimeout(() => setHasStarted(true), delay);
+          return () => clearTimeout(t);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [hasStarted, delay]);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+    let i = 0;
+    setDisplayed('');
+    const interval = setInterval(() => {
+      i++;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) {
+        clearInterval(interval);
+        setDone(true);
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [hasStarted, text, speed]);
+
+  return (
+    <span ref={ref}>
+      {displayed}
+      {!done && (
+        <span className="inline-block w-0.5 h-[0.85em] bg-stone-400 ml-0.5 animate-pulse align-middle rounded-full" />
+      )}
+    </span>
+  );
+}
+
 function FAQItem({ q, a, isOpen, onClick }) {
   return (
     <div className="border-b border-stone-200">
@@ -260,27 +339,56 @@ function FAQItem({ q, a, isOpen, onClick }) {
 }
 
 export default function Home() {
+  const [allProducts, setAllProducts] = useState(initialAllProducts);
+  const [featuredProducts, setFeaturedProducts] = useState(initialFeaturedProducts);
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [showFullAbout, setShowFullAbout] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [openFaq, setOpenFaq] = useState(null);
 
+  useEffect(() => {
+    const fetchLiveProducts = async () => {
+      try {
+        const { data, error } = await supabase.from('products').select('*');
+        if (!error && data && data.length > 0) {
+          // If live products exist, prioritize them
+          // We map them so they replace hardcoded versions if names match
+          const merged = [...initialAllProducts];
+          data.forEach(dbProd => {
+            const idx = merged.findIndex(p => p.name === dbProd.name);
+            if (idx !== -1) {
+              merged[idx] = dbProd;
+            } else {
+              merged.unshift(dbProd);
+            }
+          });
+          setAllProducts(merged);
+          setFeaturedProducts(merged.slice(0, 3));
+        }
+      } catch (err) {
+        console.error("Link error:", err);
+      }
+    };
+
+    fetchLiveProducts();
+  }, []);
+
   return (
     <div className="flex flex-col gap-8 md:gap-10 pb-8 md:pb-12 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="w-full max-w-[1760px] mx-auto px-0 sm:px-6 lg:px-8 mt-6 md:mt-12">
+      <section className="w-full sm:max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 mt-0 sm:mt-6">
         <Link 
           href="/products" 
-          className="block relative w-full overflow-hidden rounded-none sm:rounded-2xl shadow-xl group aspect-[3/2] sm:aspect-[16/9] md:aspect-[1760/627] max-h-[627px]"
+          className="block relative w-full overflow-hidden rounded-none sm:rounded-[3.5rem] shadow-2xl group aspect-[3/2] sm:aspect-[2048/770] h-auto"
         >
           <img 
-            src="/hero-v15.png" 
-            alt="Natural Wood Cold Pressed Oils" 
-            className="w-full h-full object-cover object-center block transition-transform duration-700 group-hover:scale-105"
+            src="/hero-v19.png" 
+            alt="Shree Avighna Premium Oils" 
+            className="relative z-10 w-full h-full object-cover object-center block"
           />
           {/* Tagline Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent flex flex-col justify-end items-center pb-8 md:pb-16 px-4 z-10 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end items-center pb-8 md:pb-16 px-4 z-10 pointer-events-none">
             <div className="w-full flex flex-col items-center gap-3 md:gap-6 animate-fade-in-up">
               <h2 className="typewriter-text text-white text-[10px] sm:text-sm md:text-xl font-bold tracking-[0.15em] sm:tracking-[0.25em] md:tracking-[0.4em] uppercase drop-shadow-xl text-center">
                 100% Pure • Natural • Wood-Pressed
@@ -342,8 +450,14 @@ export default function Home() {
                 <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary group-hover:bg-primary group-hover:text-stone-900 transition-all duration-300">
                   <benefit.icon className="w-8 h-8" />
                 </div>
-                <h3 className="text-xl font-bold text-stone-50 mb-3">{benefit.title}</h3>
-                <p className="text-stone-300 text-sm leading-relaxed">{benefit.desc}</p>
+                <h3 className="text-xl font-bold text-stone-50 mb-3">
+                  {benefit.title === '100% Natural' ? (
+                    <><CountUp target={100} suffix="%" /> Natural</>
+                  ) : benefit.title}
+                </h3>
+                <p className="text-stone-300 text-sm leading-relaxed">
+                  <TypeWriter text={benefit.desc} speed={35} delay={idx * 300} />
+                </p>
               </div>
             ))}
           </div>

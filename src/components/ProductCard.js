@@ -4,14 +4,18 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
-import { PlusIcon, EyeIcon, XMarkIcon, CheckCircleIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, EyeIcon, XMarkIcon, CheckCircleIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ProductCard = ({ product }) => {
-  const { addToCart } = useCart();
+  const { cart, addToCart } = useCart();
+  
   const availableSizes = Object.keys(product?.prices || {});
   const [selectedSize, setSelectedSize] = React.useState(availableSizes.includes('1lt') ? '1lt' : (availableSizes[0] || ''));
   const [showDetails, setShowDetails] = React.useState(false);
+  
+  const cartItemId = `${product.id}-${selectedSize}`;
+  const isInCart = cart.some(item => item.cartItemId === cartItemId);
   const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
@@ -125,13 +129,28 @@ const ProductCard = ({ product }) => {
                 </div>
                 <button 
                   onClick={() => {
-                    addToCart(product, selectedSize);
-                    setShowDetails(false);
+                    if (isInCart) {
+                      window.location.href = '/cart';
+                    } else {
+                      addToCart(product, selectedSize);
+                      setShowDetails(false);
+                    }
                   }}
                   className="w-full sm:w-auto btn-primary py-4 px-12 text-xl shadow-xl hover:shadow-primary/20 active:scale-95 transition-all"
                 >
-                  Add to Cart
+                  {isInCart ? "View in Cart" : "Add to Cart"}
                 </button>
+                {isInCart && (
+                  <button 
+                    onClick={() => {
+                        addToCart(product, selectedSize);
+                        setShowDetails(false);
+                    }}
+                    className="w-full sm:w-auto text-stone-500 font-bold hover:text-secondary text-sm underline"
+                  >
+                    Add More
+                  </button>
+                )}
               </div>
             </div>
           </motion.div>
@@ -148,7 +167,7 @@ const ProductCard = ({ product }) => {
             src={product.image || product.image_url || 'https://via.placeholder.com/400x400?text=Premium+Oil'}
             alt={product.name}
             fill
-            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            className="object-cover"
           />
           <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-[10px] font-bold text-stone-900 shadow-sm border border-stone-100 uppercase tracking-widest z-10">
             {product.category || 'Wood Pressed'}
@@ -201,11 +220,22 @@ const ProductCard = ({ product }) => {
               View
             </button>
             <button 
-              onClick={() => addToCart(product, selectedSize)}
-              className="bg-secondary text-white p-2.5 rounded-xl shadow-lg shadow-secondary/20 hover:bg-green-800 transition-all hover:scale-105 active:scale-95"
+              onClick={() => {
+                addToCart(product, selectedSize);
+              }}
+              className={`${isInCart ? 'bg-accent' : 'bg-secondary'} text-white p-2.5 rounded-xl shadow-lg hover:brightness-110 transition-all hover:scale-105 active:scale-95 flex items-center justify-center relative`}
               aria-label="Add to cart"
             >
-              <PlusIcon className="w-5 h-5" />
+              {isInCart ? (
+                <>
+                  <ShoppingCartIcon className="w-5 h-5" />
+                  <span className="absolute -top-2 -right-2 bg-stone-900 border-2 border-white text-[10px] font-bold px-1.5 py-0.5 rounded-full animate-bounce">
+                    {cart.find(i => i.cartItemId === `${product.id}-${selectedSize}`)?.quantity || 0}
+                  </span>
+                </>
+              ) : (
+                <PlusIcon className="w-5 h-5" />
+              )}
             </button>
           </div>
         </div>

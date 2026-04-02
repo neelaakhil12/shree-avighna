@@ -1,8 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import ProductCard from "@/components/ProductCard";
 import { supabase } from '@/lib/supabase';
+import { useCart } from '@/context/CartContext';
+import { ShoppingCartIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const hardcodedProducts = [
   {
@@ -195,6 +198,7 @@ const hardcodedProducts = [
 export default function ProductsPage() {
   const [products, setProducts] = useState(hardcodedProducts);
   const [loading, setLoading] = useState(true);
+  const { cartCount, cartTotal } = useCart();
 
   useEffect(() => {
     const fetchLiveProducts = async () => {
@@ -224,13 +228,39 @@ export default function ProductsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-20">
         {products.filter(p => p && p.name && p.prices).map((product, idx) => (
           <div key={product.id || idx} data-aos="fade-up" data-aos-delay={idx * 50}>
             <ProductCard product={product} />
           </div>
         ))}
       </div>
+
+      {/* Floating View Cart Button */}
+      {cartCount > 0 && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm" data-aos="fade-up">
+          <Link 
+            href="/cart"
+            className="flex items-center justify-between bg-stone-900 border border-stone-800 text-white p-4 pl-6 rounded-2xl shadow-2xl hover:bg-stone-800 transition-all group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <ShoppingCartIcon className="w-6 h-6 text-primary" />
+                <span className="absolute -top-2 -right-2 bg-accent text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-stone-900">
+                  {cartCount}
+                </span>
+              </div>
+              <div>
+                <p className="text-xs text-stone-400 font-bold uppercase tracking-widest">View Your Cart</p>
+                <p className="font-bold">₹{cartTotal}</p>
+              </div>
+            </div>
+            <div className="bg-primary text-stone-900 p-2 rounded-xl group-hover:scale-110 transition-transform">
+              <ArrowRightIcon className="w-5 h-5 font-bold" />
+            </div>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }

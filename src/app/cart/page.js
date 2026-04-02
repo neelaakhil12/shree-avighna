@@ -36,7 +36,12 @@ export default function CartPage() {
           {cart.map((item) => (
             <div key={item.cartItemId} className="bg-white rounded-2xl p-4 sm:p-6 border border-stone-100 shadow-sm flex flex-col sm:flex-row items-center gap-6" data-aos="fade-up">
               <div className="relative w-24 h-24 rounded-xl overflow-hidden bg-stone-100 flex-shrink-0">
-                <Image src={item.image} alt={item.name} fill className="object-cover" />
+                <Image 
+                  src={item.image || item.image_url || 'https://via.placeholder.com/200x200?text=Premium+Oil'} 
+                  alt={item.name} 
+                  fill 
+                  className="object-cover" 
+                />
               </div>
               
               <div className="flex-grow text-center sm:text-left">
@@ -100,7 +105,7 @@ export default function CartPage() {
               href="/checkout" 
               className="btn-primary w-full py-5 text-lg shadow-lg shadow-yellow-500/10 mb-6"
             >
-              Checkout Now <ArrowRightIcon className="w-5 h-5" />
+              Proceed to Pay <ArrowRightIcon className="w-5 h-5" />
             </Link>
             
             <p className="text-[10px] text-stone-500 text-center uppercase tracking-widest font-bold">

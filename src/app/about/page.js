@@ -193,7 +193,7 @@ export default function About() {
       <section className="bg-white py-6 md:py-12 border-t border-stone-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center mb-8 md:mb-16" data-aos="fade-up">
-            <h2 className="text-3xl md:text-5xl font-bold text-stone-900 mb-4">FAQ's</h2>
+            <h2 className="text-3xl md:text-5xl font-bold text-stone-900 mb-4">FAQs</h2>
             <p className="text-stone-500">Everything you need to know about our products & process.</p>
           </div>
           <div className="bg-white rounded-3xl shadow-sm border border-stone-200 p-8 md:p-12" data-aos="fade-up">

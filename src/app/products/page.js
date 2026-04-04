@@ -203,11 +203,19 @@ export default function ProductsPage() {
   useEffect(() => {
     const fetchLiveProducts = async () => {
       try {
-        const { data, error } = await supabase.from('products').select('*');
-        if (!error && data && data.length > 0) {
-          // If live products exist, prioritize them or show them alongside (User choice)
-          // For now, let's prepend live products to the hardcoded list
-          setProducts([...data, ...hardcodedProducts]);
+        const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+        if (!error && data) {
+          // Deduplicate by name: database products replace hardcoded ones
+          const merged = [...hardcodedProducts];
+          data.forEach(dbProd => {
+            const idx = merged.findIndex(p => p.name === dbProd.name);
+            if (idx !== -1) {
+              merged[idx] = dbProd;
+            } else {
+              merged.unshift(dbProd);
+            }
+          });
+          setProducts(merged);
         }
       } catch (err) {
         console.error("Link error:", err);

@@ -383,7 +383,7 @@ export default function Home() {
           className="block relative w-full overflow-hidden rounded-none sm:rounded-[3.5rem] shadow-2xl group aspect-[3/2] sm:aspect-[2048/770] h-auto"
         >
           <img 
-            src="/hero-v19.png" 
+            src="/hero-v15.png" 
             alt="Shree Avighna Premium Oils" 
             className="relative z-10 w-full h-full object-cover object-center block"
           />

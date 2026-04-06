@@ -27,15 +27,15 @@ export const metadata = {
     address: true,
     telephone: true,
   },
-  metadataBase: new URL('https://shreeavighna.com'), // Replace with your actual domain
+  metadataBase: new URL('https://shreeavighnanaturals.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     title: 'Shree Avighna | Natural Wood Cold Pressed Oils',
     description: '100% pure and natural wood cold-pressed edible oils. Healthy, traditional, and pure.',
-    url: 'https://shreeavighna.com',
-    siteName: 'Shree Avighna',
+    url: 'https://shreeavighnanaturals.com',
+    siteName: 'Shree Avighna Naturals',
     images: [
       {
         url: '/hero-v15.png', // Main sharing image

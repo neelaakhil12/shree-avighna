@@ -5,6 +5,6 @@ export default function robots() {
       allow: '/',
       disallow: ['/admin', '/api/'],
     },
-    sitemap: 'https://shreeavighna.com/sitemap.xml',
+    sitemap: 'https://shreeavighnanaturals.com/sitemap.xml',
   };
 }

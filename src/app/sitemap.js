@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = 'https://shreeavighna.com'; // USER: Replace with your actual domain
+  const baseUrl = 'https://shreeavighnanaturals.com';
 
   // We could fetch dynamic products from Supabase here, 
   // but since it's a small store, we'll list the main paths and let search engines find product modals from index

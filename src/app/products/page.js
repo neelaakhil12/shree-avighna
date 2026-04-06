@@ -233,10 +233,10 @@ export default function ProductsPage() {
     "itemListElement": products.map((product, index) => ({
       "@type": "ListItem",
       "position": index + 1,
-      "url": `https://shreeavighna.com/products#${product.id || index}`,
+      "url": `https://shreeavighnanaturals.com/products#${product.id || index}`,
       "name": product.name,
       "description": product.caption,
-      "image": `https://shreeavighna.com${product.image_url}`,
+      "image": `https://shreeavighnanaturals.com${product.image_url}`,
       "offers": {
         "@type": "AggregateOffer",
         "priceCurrency": "INR",

@@ -227,8 +227,33 @@ export default function ProductsPage() {
     fetchLiveProducts();
   }, []);
 
+  const productSchema = {
+    "@context": "https://schema.org/",
+    "@type": "ItemList",
+    "itemListElement": products.map((product, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "url": `https://shreeavighna.com/products#${product.id || index}`,
+      "name": product.name,
+      "description": product.caption,
+      "image": `https://shreeavighna.com${product.image_url}`,
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "INR",
+        "lowPrice": Math.min(...Object.values(product.prices || { a: 0 })),
+        "highPrice": Math.max(...Object.values(product.prices || { a: 0 })),
+        "offerCount": Object.keys(product.prices || {}).length,
+        "availability": "https://schema.org/InStock"
+      }
+    }))
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <div className="mb-6 md:mb-16" data-aos="fade-up">
         <h1 className="text-4xl font-bold text-stone-900 mb-4">Our Products</h1>
         <p className="text-stone-500 max-w-2xl">

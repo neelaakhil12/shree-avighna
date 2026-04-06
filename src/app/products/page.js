@@ -245,7 +245,7 @@ export default function ProductsPage() {
         ) : (
           products.filter(p => p && p.name && p.prices).map((product, idx) => (
             <div key={product.id || idx} data-aos="fade-up" data-aos-delay={idx * 50}>
-              <ProductCard product={product} />
+              <ProductCard product={product} priority={idx < 4} />
             </div>
           ))
         )}

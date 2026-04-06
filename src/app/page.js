@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import ProductCard from "@/components/ProductCard";
 import { 
   ShieldCheckIcon, 
@@ -385,9 +386,12 @@ export default function Home() {
           href="/products" 
           className="block relative w-full overflow-hidden rounded-none sm:rounded-[3.5rem] shadow-2xl group aspect-[3/2] sm:aspect-[2048/770] h-auto"
         >
-          <img 
+          <Image 
             src="/hero-v15.png" 
             alt="Shree Avighna Premium Oils" 
+            fill
+            priority
+            quality={90}
             className="relative z-10 w-full h-full object-cover object-center block"
           />
           {/* Tagline Overlay */}

@@ -144,6 +144,8 @@ export default function About() {
                 src="/about-image.png" 
                 alt="Shree Avighna Premium Wood Cold Pressed Oils" 
                 fill 
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>

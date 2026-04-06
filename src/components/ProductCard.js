@@ -7,7 +7,7 @@ import { useCart } from '@/context/CartContext';
 import { PlusIcon, MinusIcon, EyeIcon, XMarkIcon, CheckCircleIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, priority = false }) => {
   const { cart, addToCart, removeFromCart, updateQuantity } = useCart();
   
   const availableSizes = Object.keys(product?.prices || {});
@@ -174,7 +174,8 @@ const ProductCard = ({ product }) => {
             alt={product.name}
             fill
             className="object-cover"
-            unoptimized={true}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            priority={priority}
           />
           <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-[10px] font-bold text-stone-900 shadow-sm border border-stone-100 uppercase tracking-widest z-10">
             {product.category || 'Wood Pressed'}

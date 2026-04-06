@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ShoppingCartIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useCart } from '@/context/CartContext';
@@ -38,9 +39,12 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/" className="flex items-center -ml-4 md:ml-0">
-            <img
-              src="/splash-logo.png?v=1"
+            <Image
+              src="/splash-logo.png"
               alt="Shree Avighna Logo"
+              width={160}
+              height={80}
+              priority
               className="h-14 md:h-20 w-auto object-contain"
             />
           </Link>

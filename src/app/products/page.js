@@ -14,7 +14,7 @@ const hardcodedProducts = [
     prices: { "250ml": 95, "500ml": 185, "1lt": 370, "5lts": 1850, "10lts": 3700, "15lts": 5550 },
     caption: "Carefully Selected Groundnuts, Wood Cold Pressed for Purity",
     description: "Our Groundnut Wood Cold Pressed Oil is made from carefully selected farm-fresh groundnuts, extracted using the traditional wooden ghani (wood cold press) method at low temperatures. This slow and natural process helps retain the oil’s natural nutrients, aroma, and authentic flavor without using heat, chemicals, or preservatives. With its rich taste and natural purity, Shree Avighna Groundnut Oil is a wholesome choice for everyday cooking and traditional recipes, bringing the goodness of farm-fresh ingredients to your kitchen.",
-    image: "/products/groundnut.png",
+    image_url: "/products/groundnut.png",
     category: "Wood Pressed",
     benefits: [
       "Supports Heart Health: Rich in monounsaturated and polyunsaturated fats that help maintain balanced cholesterol levels and support overall heart health.",
@@ -28,11 +28,11 @@ const hardcodedProducts = [
   },
   {
     id: "white-sesame-oil",
-    name: "Hulled White Sesame Oil",
+    name: "White Sesame Oil",
     prices: { "250ml": 150, "500ml": 295, "1lt": 590, "5lts": 2950, "10lts": 5900, "15lts": 8850 },
     caption: "Nature’s goodness, traditionally extracted. Cold pressed sesame oil for pure taste and healthy living.",
     description: "White Sesame Seeds (also known as White Til or Safed Til) are small, oil-rich seeds obtained from the plant Sesamum indicum. They are widely used in cooking and are traditionally known for producing high-quality sesame oil through natural wood cold-pressing methods. At Shree Avighna, we use hulled sesame seeds, where the outer husk is removed to reveal smooth off-white seeds with a mild nutty flavor and natural aroma. These premium seeds are commonly used in cooking, sweets, and especially for oil extraction. Due to their naturally high oil content, white sesame seeds are ideal for producing pure wood cold-pressed sesame oil, ensuring rich taste, natural nutrients, and authentic quality in every drop. White sesame seeds are rich in nutrients such as: Healthy fats (monounsaturated & polyunsaturated), Plant protein, Dietary fiber, Calcium, magnesium, and iron, Vitamin B complex and Vitamin E, Natural antioxidants like lignans.",
-    image: "/products/white-sesame.png",
+    image_url: "/products/white-sesame.png",
     category: "Wood Pressed",
     benefits: [
       "Supports Heart Health: Rich in healthy fats that may help maintain good cholesterol levels and support overall heart health.",
@@ -50,7 +50,7 @@ const hardcodedProducts = [
     prices: { "250ml": 150, "500ml": 295, "1lt": 590, "5lts": 2950, "10lts": 5900, "15lts": 8850 },
     caption: "Black Sesame. Wood Pressed. Naturally Powerful.",
     description: "At Shree Avighna, we use premium-quality black sesame seeds to produce pure wood cold-pressed sesame oil. Known for its deep color, strong aroma, and high nutritional value, this oil has been traditionally valued in Indian households for cooking, wellness, and Ayurvedic practices, delivering natural goodness in every drop.",
-    image: "/products/black-sesame.png",
+    image_url: "/products/black-sesame.png",
     category: "Wood Pressed",
     benefits: [
       "Supports Heart Health: Rich in healthy fats that help maintain balanced cholesterol levels.",
@@ -67,7 +67,7 @@ const hardcodedProducts = [
     prices: { "250ml": 130, "500ml": 245, "1lt": 490, "5lts": 2450, "10lts": 4900, "15lts": 7350 },
     caption: "Premium Hulled Safflower Seeds – Pure, Clean, and Rich in Natural Oil.",
     description: "Safflower seeds are known for their high content of healthy unsaturated fats, making the oil a preferred choice for everyday cooking and healthy lifestyles. The result is pure, natural, and nutrient-rich safflower oil, bringing traditional goodness and quality to your kitchen. Safflower hulled seeds are carefully cleaned seeds of the safflower plant (Carthamus tinctorius), with the outer husk removed to obtain the inner kernel. These kernels are rich in natural oil and are widely used for producing high-quality wood cold pressed safflower oil.",
-    image: "/products/safflower.png",
+    image_url: "/products/safflower.png",
     category: "Wood Pressed",
     benefits: [
       "Supports Heart Health: Rich in unsaturated fatty acids that may help maintain healthy cholesterol levels.",
@@ -84,7 +84,7 @@ const hardcodedProducts = [
     prices: { "250ml": 130, "500ml": 245, "1lt": 490, "5lts": 2450, "10lts": 4900, "15lts": 7350 },
     caption: "Light, Healthy, and Naturally Nourishing – That's Sunflower Oil.",
     description: "At Shree Avighna, premium-quality sunflower seeds are used to produce pure wood cold-pressed sunflower oil. Known for its light color, delicate taste, and nutritional benefits, this oil is ideal for everyday cooking while maintaining the natural goodness of the seeds.",
-    image: "/products/sunflower.png",
+    image_url: "/products/sunflower.png",
     category: "Wood Pressed",
     benefits: [
       "Supports Heart Health: Rich in healthy unsaturated fats that help support balanced cholesterol levels.",
@@ -100,7 +100,7 @@ const hardcodedProducts = [
     prices: { "500ml": 0, "1lt": 0, "5lts": 0, "10lts": 0, "15lts": 0 },
     caption: "Nature's Secret for Skin and Hair",
     description: "Pure, unrefined almond oil, traditionally extracted through wood cold pressing, preserves all its natural nutrients and goodness. This gentle, chemical-free process ensures that vitamins, antioxidants, and essential fatty acids remain intact, making it ideal for both dietary and cosmetic use. Renowned for its light, nutty aroma and smooth texture, this oil deeply nourishes the skin, promoting softness, hydration, and a healthy glow. It strengthens hair, reduces breakage, and enhances shine while supporting scalp health. Beyond beauty, regular consumption in small quantities may contribute to overall wellness by supporting heart health, boosting immunity, and improving metabolic balance.",
-    image: "/products/badam.png",
+    image_url: "/products/badam.png",
     category: "Premium Oils",
     benefits: [
       "Nourishes Skin: Moisturizes deeply, improves complexion, and helps reduce dryness.",
@@ -117,7 +117,7 @@ const hardcodedProducts = [
     prices: { "250ml": 105, "500ml": 210, "1lt": 420, "5lts": 2100, "10lts": 4200, "15lts": 6300 },
     caption: "Pure Strength, Naturally Pressed",
     description: "Mustard seeds are small, round seeds obtained from the mustard plant, widely known for their strong aroma and rich oil content. These seeds have been traditionally used in Indian cooking and are valued for producing pure mustard oil through natural extraction methods. Mustard seeds are naturally rich in oil and essential nutrients, making them ideal for producing pure, flavorful, and nutrient-rich wood cold-pressed mustard oil.",
-    image: "/products/mustard.png",
+    image_url: "/products/mustard.png",
     category: "Wood Pressed",
     benefits: [
       "Supports Heart Health: Contains healthy fats that may help maintain balanced cholesterol levels.",
@@ -133,7 +133,7 @@ const hardcodedProducts = [
     prices: { "250ml": 175, "500ml": 350, "1lt": 700, "5lts": 3500, "10lts": 7000, "15lts": 10500 },
     caption: "Nature's Shield for Skin and Hair.",
     description: "Our refined Neem Oil is extracted from premium quality neem seeds using traditional wood cold pressing, preserving its natural goodness while ensuring a smooth, pure oil. This refined version has a lighter aroma and clarity, making it versatile for cosmetic, therapeutic, and household applications.",
-    image: "/products/neem.png",
+    image_url: "/products/neem.png",
     category: "Natural Extracts",
     benefits: [
       "Skin Care: Helps soothe skin irritations, acne, and rashes.",
@@ -149,7 +149,7 @@ const hardcodedProducts = [
     prices: { "250ml": 225, "500ml": 450, "1lt": 900, "5lts": 4500, "10lts": 9000, "15lts": 13500 },
     caption: "From Fresh Coconuts to Your Glow",
     description: "Pure, unrefined coconut oil, traditionally wood cold pressed from fresh coconuts (Kurudi), preserving all natural nutrients and aroma. Rich in lauric acid and antioxidants, it nourishes skin, strengthens hair, and supports overall wellness. Its light, tropical fragrance and smooth texture make it ideal for daily hair, skin, and culinary use.",
-    image: "/products/kuridi.png",
+    image_url: "/products/kuridi.png",
     category: "Wood Pressed",
     benefits: [
       "Deeply Nourishes Skin: Moisturizes and softens skin, improving texture and hydration.",
@@ -167,7 +167,7 @@ const hardcodedProducts = [
     prices: { "500ml": 0, "1lt": 0, "5lts": 0, "10lts": 0, "15lts": 0 },
     caption: "Nature's Omega Boost in Every Drop",
     description: "Flax seed oil, extracted from premium flax seeds using traditional wood cold pressing, is a pure and natural oil that retains all its nutrients. This gentle, chemical-free method preserves omega-3 fatty acids, lignans, and antioxidants, making it a wholesome choice for daily consumption. Its light, nutty flavor is ideal for salads, smoothies, and other cold preparations, adding both taste and nutrition to your diet.",
-    image: "/products/flax.png",
+    image_url: "/products/flax.png",
     category: "Wellness",
     benefits: [
       "Heart Health: Rich in Omega-3 fatty acids to support cardiovascular wellness.",
@@ -183,7 +183,7 @@ const hardcodedProducts = [
     prices: { "250ml": 105, "500ml": 210, "1lt": 420, "5lts": 2100, "10lts": 4200, "15lts": 6300 },
     caption: "Nature's Elixir for Hair and Skin",
     description: "At Shree Avighna, premium-quality castor seeds are used to produce pure wood cold-pressed castor oil. Known for its thick texture and high nutritional value, castor oil has been traditionally used for hair care, skin care, and wellness practices.",
-    image: "/products/castor.png",
+    image_url: "/products/castor.png",
     category: "Natural Extracts",
     benefits: [
       "Promotes Hair Growth: Helps nourish the scalp and supports healthy hair growth.",
@@ -196,7 +196,7 @@ const hardcodedProducts = [
 ];
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState(hardcodedProducts);
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { cartCount, cartTotal } = useCart();
 
@@ -210,7 +210,7 @@ export default function ProductsPage() {
           data.forEach(dbProd => {
             const idx = merged.findIndex(p => p.name === dbProd.name);
             if (idx !== -1) {
-              merged[idx] = dbProd;
+              merged[idx] = { ...merged[idx], ...dbProd };
             } else {
               merged.unshift(dbProd);
             }
@@ -237,11 +237,18 @@ export default function ProductsPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-20">
-        {products.filter(p => p && p.name && p.prices).map((product, idx) => (
-          <div key={product.id || idx} data-aos="fade-up" data-aos-delay={idx * 50}>
-            <ProductCard product={product} />
-          </div>
-        ))}
+        {loading ? (
+          // Simple loading skeletons
+          [...Array(8)].map((_, i) => (
+            <div key={i} className="animate-pulse bg-stone-100 h-[400px] rounded-3xl" />
+          ))
+        ) : (
+          products.filter(p => p && p.name && p.prices).map((product, idx) => (
+            <div key={product.id || idx} data-aos="fade-up" data-aos-delay={idx * 50}>
+              <ProductCard product={product} />
+            </div>
+          ))
+        )}
       </div>
 
       {/* Floating View Cart Button */}

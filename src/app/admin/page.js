@@ -37,7 +37,7 @@ const hardcodedProducts = [
   },
   {
     id: "white-sesame-oil",
-    name: "Hulled White Sesame Oil",
+    name: "White Sesame Oil",
     prices: { "250ml": 150, "500ml": 295, "1lt": 590, "5lts": 2950, "10lts": 5900, "15lts": 8850 },
     caption: "Nature’s goodness, traditionally extracted. Cold pressed sesame oil for pure taste and healthy living.",
     description: "White Sesame Seeds (also known as White Til or Safed Til) are small, oil-rich seeds obtained from the plant Sesamum indicum. We use hulled sesame seeds, where the outer husk is removed to reveal smooth off-white seeds with a mild nutty flavor.",

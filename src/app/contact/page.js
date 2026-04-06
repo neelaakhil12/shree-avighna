@@ -6,17 +6,17 @@ import { EnvelopeIcon, PhoneIcon, MapPinIcon } from '@heroicons/react/24/outline
 const contactInfo = [
   {
     title: "Email Us",
-    value: "info@shreeavigna.com",
+    value: "shreeavighnanaturals@gmail.com",
     icon: EnvelopeIcon
   },
   {
     title: "Call Us",
-    value: "+91 91234 56789",
+    value: "9885801623 & +91 63042 18374",
     icon: PhoneIcon
   },
   {
     title: "Visit Us",
-    value: "5th Floor, Swathi Plaza, Leela Nagar, Ameerpet, Hyderabad, 500016",
+    value: "9-1-364/B/38/2, Gandhi Nagar, Bapu ghat, Golconda, Hyderabad, 500008, Telangana",
     icon: MapPinIcon
   }
 ];

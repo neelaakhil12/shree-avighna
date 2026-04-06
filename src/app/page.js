@@ -85,7 +85,7 @@ const initialAllProducts = [
   },
   {
     id: "white-sesame-oil",
-    name: "Hulled White Sesame Oil",
+    name: "White Sesame Oil",
     prices: { "250ml": 150, "500ml": 295, "1lt": 590, "5lts": 2950, "10lts": 5900, "15lts": 8850 },
     caption: "Nature’s goodness, traditionally extracted.",
     description: "White Sesame Seeds are traditionally known for producing high-quality sesame oil through natural wood cold-pressing methods.",
@@ -339,8 +339,9 @@ function FAQItem({ q, a, isOpen, onClick }) {
 }
 
 export default function Home() {
-  const [allProducts, setAllProducts] = useState(initialAllProducts);
-  const [featuredProducts, setFeaturedProducts] = useState(initialFeaturedProducts);
+  const [allProducts, setAllProducts] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [showFullAbout, setShowFullAbout] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
@@ -358,7 +359,7 @@ export default function Home() {
           data.forEach(dbProd => {
             const idx = merged.findIndex(p => p.name === dbProd.name);
             if (idx !== -1) {
-              merged[idx] = dbProd;
+              merged[idx] = { ...merged[idx], ...dbProd };
             } else {
               merged.unshift(dbProd);
             }
@@ -368,6 +369,8 @@ export default function Home() {
         }
       } catch (err) {
         console.error("Link error:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -414,16 +417,22 @@ export default function Home() {
           layout
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 overflow-hidden"
         >
-          {(showAllProducts ? allProducts : featuredProducts).map((product, idx) => (
-            <motion.div 
-              layout
-              key={product.id} 
-              data-aos="fade-up" 
-              data-aos-delay={idx * 100}
-            >
-              <ProductCard product={product} />
-            </motion.div>
-          ))}
+          {loading ? (
+             [...Array(showAllProducts ? 8 : 3)].map((_, i) => (
+              <div key={i} className="animate-pulse bg-stone-100 h-[400px] rounded-3xl" />
+            ))
+          ) : (
+            (showAllProducts ? allProducts : featuredProducts).map((product, idx) => (
+              <motion.div 
+                layout
+                key={product.id || idx} 
+                data-aos="fade-up" 
+                data-aos-delay={idx * 100}
+              >
+                <ProductCard product={product} />
+              </motion.div>
+            ))
+          )}
         </motion.div>
 
         <div className="mt-12 text-center" data-aos="fade-up">
@@ -440,7 +449,7 @@ export default function Home() {
       <section className="bg-[#3C2A21] py-12 md:py-20" id="benefits">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 md:mb-16" data-aos="zoom-in">
-            <h2 className="text-4xl font-bold text-stone-50 mb-4 font-serif">Why Choose Shree Avigna?</h2>
+            <h2 className="text-4xl font-bold text-stone-50 mb-4 font-serif">Why Choose Shree Avighna?</h2>
             <p className="text-stone-300 max-w-2xl mx-auto">We are committed to delivering the highest quality edible oils through traditional and natural methods.</p>
           </div>
           
@@ -531,9 +540,9 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1 space-y-6">
             {[
-              { title: "Email Us", value: "info@shreeavigna.com", icon: EnvelopeIcon },
-              { title: "Call Us", value: "+91 91234 56789", icon: PhoneIcon },
-              { title: "Visit Us", value: "5th Floor, Swathi Plaza, Ameerpet, Hyderabad", icon: MapPinIcon }
+              { title: "Email Us", value: "shreeavighnanaturals@gmail.com", icon: EnvelopeIcon },
+              { title: "Call Us", value: "9885801623 & +91 63042 18374", icon: PhoneIcon },
+              { title: "Visit Us", value: "9-1-364/B/38/2, Gandhi Nagar, Bapu ghat, Golconda, Hyderabad, 500008, Telangana", icon: MapPinIcon }
             ].map((info, idx) => (
               <div key={info.title} className="bg-white p-6 rounded-2xl border border-stone-100 shadow-sm flex items-center gap-4" data-aos="fade-up" data-aos-delay={idx * 100}>
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary shrink-0">

@@ -40,7 +40,7 @@ const Navbar = () => {
           <Link href="/" className="flex items-center -ml-4 md:ml-0">
             <img
               src="/splash-logo.png?v=1"
-              alt="Shree Avigna Logo"
+              alt="Shree Avighna Logo"
               className="h-14 md:h-20 w-auto object-contain"
             />
           </Link>

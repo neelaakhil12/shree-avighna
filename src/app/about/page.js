@@ -141,7 +141,7 @@ export default function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-lg">
               <Image 
-                src="/services_showcase.png" 
+                src="/about-image.png" 
                 alt="Shree Avighna Premium Wood Cold Pressed Oils" 
                 fill 
                 className="object-cover"

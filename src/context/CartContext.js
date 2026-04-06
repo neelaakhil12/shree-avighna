@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
 
   // Load cart from localStorage on init
   useEffect(() => {
-    const savedCart = localStorage.getItem('shree_avigna_cart');
+    const savedCart = localStorage.getItem('shree_avighna_cart') || localStorage.getItem('shree_avigna_cart');
     if (savedCart) {
       setCart(JSON.parse(savedCart));
     }
@@ -17,7 +17,7 @@ export const CartProvider = ({ children }) => {
 
   // Save cart to localStorage on change
   useEffect(() => {
-    localStorage.setItem('shree_avigna_cart', JSON.stringify(cart));
+    localStorage.setItem('shree_avighna_cart', JSON.stringify(cart));
   }, [cart]);
 
   const addToCart = (product, selectedSize) => {

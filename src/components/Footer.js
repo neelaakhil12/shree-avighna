@@ -10,7 +10,7 @@ const Footer = () => {
             <div className="mb-6">
               <img
                 src="/splash-logo.png?v=1"
-                alt="Shree Avigna Logo"
+                alt="Shree Avighna Logo"
                 className="h-12 md:h-16 w-auto object-contain"
               />
             </div>
@@ -47,15 +47,15 @@ const Footer = () => {
             <ul className="space-y-4 text-sm">
               <li className="flex flex-col">
                 <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest leading-none mb-1">Email</span>
-                <span className="text-stone-900">info@shreeavigna.com</span>
+                <span className="text-stone-900">shreeavighnanaturals@gmail.com</span>
               </li>
               <li className="flex flex-col">
                 <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest leading-none mb-1">Phone</span>
-                <span className="text-stone-900">+91 91234 56789</span>
+                <span className="text-stone-900">9885801623, +91 63042 18374</span>
               </li>
               <li className="flex flex-col">
                 <span className="text-stone-400 uppercase text-[10px] font-bold tracking-widest leading-none mb-1">Address</span>
-                <span className="text-stone-900">5th Floor, Swathi Plaza, Leela Nagar, Ameerpet, Hyderabad, 500016</span>
+                <span className="text-stone-900">9-1-364/B/38/2, Gandhi Nagar, Bapu ghat, Golconda, Hyderabad, 500008, Telangana</span>
               </li>
             </ul>
           </div>
@@ -63,7 +63,7 @@ const Footer = () => {
 
         <div className="border-t border-stone-100 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-semibold">
           <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4">
-            <p className="text-stone-400">© {new Date().getFullYear()} Shree Avigna Natural Oils. All rights reserved.</p>
+            <p className="text-stone-400">© {new Date().getFullYear()} Shree Avighna Natural Oils. All rights reserved.</p>
             <span className="hidden md:block text-stone-200">|</span>
             <Link 
               href="https://www.codtechitsolutions.com/" 

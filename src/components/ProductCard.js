@@ -4,15 +4,17 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
-import { PlusIcon, EyeIcon, XMarkIcon, CheckCircleIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
+import { PlusIcon, MinusIcon, EyeIcon, XMarkIcon, CheckCircleIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ProductCard = ({ product }) => {
-  const { cart, addToCart } = useCart();
+  const { cart, addToCart, removeFromCart, updateQuantity } = useCart();
   
   const availableSizes = Object.keys(product?.prices || {});
   const [selectedSize, setSelectedSize] = React.useState(availableSizes.includes('1lt') ? '1lt' : (availableSizes[0] || ''));
   const [showDetails, setShowDetails] = React.useState(false);
+  
+  const isOutOfStock = product.in_stock === false;
   
   const cartItemId = `${product.id}-${selectedSize}`;
   const isInCart = cart.some(item => item.cartItemId === cartItemId);
@@ -20,7 +22,6 @@ const ProductCard = ({ product }) => {
 
   React.useEffect(() => {
     setMounted(true);
-    return () => setMounted(false);
   }, []);
 
   const modalContent = (
@@ -60,7 +61,7 @@ const ProductCard = ({ product }) => {
             <div className="w-full md:w-1/2 p-6 md:p-10 flex items-center justify-center bg-stone-50">
               <div className="relative w-full aspect-square md:h-full max-h-[500px] shadow-2xl rounded-sm overflow-hidden">
                 <Image
-                  src={product.image || product.image_url || 'https://via.placeholder.com/600x600?text=Premium+Oil'}
+                  src={product.image_url || product.image || 'https://via.placeholder.com/600x600?text=Premium+Oil'}
                   alt={product.name}
                   fill
                   className="object-cover"
@@ -136,9 +137,14 @@ const ProductCard = ({ product }) => {
                       setShowDetails(false);
                     }
                   }}
-                  className="w-full sm:w-auto btn-primary py-4 px-12 text-xl shadow-xl hover:shadow-primary/20 active:scale-95 transition-all"
+                  className={`w-full sm:w-auto btn-primary py-4 px-12 text-xl shadow-xl transition-all ${
+                    isOutOfStock 
+                      ? 'bg-stone-200 text-stone-400 border-none cursor-not-allowed hover:bg-stone-200 hover:shadow-none' 
+                      : 'hover:shadow-primary/20 active:scale-95'
+                  }`}
+                  disabled={isOutOfStock}
                 >
-                  {isInCart ? "View in Cart" : "Add to Cart"}
+                  {isOutOfStock ? "Out of Stock" : (isInCart ? "View in Cart" : "Add to Cart")}
                 </button>
                 {isInCart && (
                   <button 
@@ -163,15 +169,23 @@ const ProductCard = ({ product }) => {
     <>
       <div className="organic-card group flex flex-col h-full overflow-hidden">
         <div className="relative h-56 w-full overflow-hidden bg-stone-100">
-          <Image
-            src={product.image || product.image_url || 'https://via.placeholder.com/400x400?text=Premium+Oil'}
+            <Image
+              src={product.image_url || product.image || 'https://via.placeholder.com/400x400?text=Premium+Oil'}
             alt={product.name}
             fill
             className="object-cover"
+            unoptimized={true}
           />
           <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-[10px] font-bold text-stone-900 shadow-sm border border-stone-100 uppercase tracking-widest z-10">
             {product.category || 'Wood Pressed'}
           </div>
+          {isOutOfStock && (
+            <div className="absolute inset-0 bg-stone-900/40 backdrop-blur-[2px] flex items-center justify-center z-20">
+              <span className="bg-red-600 text-white px-4 py-2 font-black text-xs uppercase tracking-[0.2em] shadow-2xl skew-x-[-12deg]">
+                Out of Stock
+              </span>
+            </div>
+          )}
         </div>
         
         <div className="p-5 flex flex-col flex-grow bg-white">
@@ -219,24 +233,48 @@ const ProductCard = ({ product }) => {
               <EyeIcon className="w-4 h-4" />
               View
             </button>
-            <button 
-              onClick={() => {
-                addToCart(product, selectedSize);
-              }}
-              className={`${isInCart ? 'bg-accent' : 'bg-secondary'} text-white p-2.5 rounded-xl shadow-lg hover:brightness-110 transition-all hover:scale-105 active:scale-95 flex items-center justify-center relative`}
-              aria-label="Add to cart"
-            >
-              {isInCart ? (
-                <>
-                  <ShoppingCartIcon className="w-5 h-5" />
-                  <span className="absolute -top-2 -right-2 bg-stone-900 border-2 border-white text-[10px] font-bold px-1.5 py-0.5 rounded-full animate-bounce">
-                    {cart.find(i => i.cartItemId === `${product.id}-${selectedSize}`)?.quantity || 0}
-                  </span>
-                </>
-              ) : (
+            
+            {isOutOfStock ? (
+              <button 
+                disabled
+                className="bg-stone-200 text-stone-400 p-2.5 rounded-xl flex items-center justify-center"
+              >
+                <XMarkIcon className="w-5 h-5" />
+              </button>
+            ) : !isInCart ? (
+              <button 
+                onClick={() => addToCart(product, selectedSize)}
+                className="bg-secondary text-white p-2.5 rounded-xl shadow-lg hover:brightness-110 transition-all hover:scale-105 active:scale-95 flex items-center justify-center"
+                aria-label="Add to cart"
+              >
                 <PlusIcon className="w-5 h-5" />
-              )}
-            </button>
+              </button>
+            ) : (
+              <div className="flex items-center bg-stone-100 rounded-xl overflow-hidden border border-stone-200">
+                <button 
+                  onClick={() => {
+                    const item = cart.find(i => i.cartItemId === cartItemId);
+                    if (item.quantity > 1) {
+                      updateQuantity(cartItemId, item.quantity - 1);
+                    } else {
+                      removeFromCart(cartItemId);
+                    }
+                  }}
+                  className="p-2.5 text-stone-600 hover:bg-stone-200 transition-colors"
+                >
+                  <MinusIcon className="w-4 h-4" />
+                </button>
+                <span className="w-8 text-center font-bold text-sm text-stone-900 bg-white py-1">
+                  {cart.find(i => i.cartItemId === cartItemId)?.quantity || 0}
+                </span>
+                <button 
+                  onClick={() => addToCart(product, selectedSize)}
+                  className="p-2.5 text-secondary hover:bg-stone-200 transition-colors"
+                >
+                  <PlusIcon className="w-4 h-4" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

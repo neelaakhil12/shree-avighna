@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Shree Avigna | Natural Wood Cold Pressed Oils",
+  title: "Shree Avighna | Natural Wood Cold Pressed Oils",
   description: "Buy 100% pure and natural wood cold-pressed edible oils. Healthy, traditional, and pure.",
 };
 

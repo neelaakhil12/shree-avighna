@@ -76,10 +76,16 @@ const Navbar = () => {
               <div className="flex items-center gap-4">
                 <Link 
                   href="/account"
+                  className="text-stone-700 hover:text-secondary font-bold transition-all duration-300 hover:scale-105 mr-2"
+                >
+                  Order History
+                </Link>
+                <Link 
+                  href="/account"
                   className="bg-stone-50 border border-stone-100 text-stone-900 px-5 py-2.5 rounded-full font-bold text-sm hover:bg-stone-100 transition-all flex items-center gap-2"
                 >
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  Account
+                  User Account
                 </Link>
                 <button 
                   onClick={() => signOut()}
@@ -140,7 +146,30 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-
+            {user && (
+              <>
+                <Link
+                  href="/account"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-lg font-bold text-stone-700 hover:text-secondary hover:bg-stone-50 rounded-2xl transition-all"
+                >
+                  Order History
+                </Link>
+                <Link
+                  href="/account"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-lg font-bold text-stone-700 hover:text-secondary hover:bg-stone-50 rounded-2xl transition-all"
+                >
+                  User Account
+                </Link>
+                <button
+                  onClick={() => { setIsMobileMenuOpen(false); signOut(); }}
+                  className="block w-full text-left px-4 py-3 text-lg font-bold text-red-500 hover:bg-red-50 rounded-2xl transition-all"
+                >
+                  Sign Out
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

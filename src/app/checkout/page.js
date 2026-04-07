@@ -17,13 +17,16 @@ const loadRazorpayScript = () => {
 
 import { supabase } from '@/lib/supabase';
 import { jsPDF } from 'jspdf';
+import { useAuth } from '@/context/AuthContext';
 
 export default function CheckoutPage() {
   const { cartTotal, cart, clearCart } = useCart();
+  const { user } = useAuth();
   const [isOrdered, setIsOrdered] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLocating, setIsLocating] = useState(false);
   const [orderId, setOrderId] = useState('');
+  const [orderSnapshot, setOrderSnapshot] = useState(null);
   const [shippingData, setShippingData] = useState({
     firstName: '',
     lastName: '',
@@ -33,6 +36,13 @@ export default function CheckoutPage() {
     address: '',
     city: ''
   });
+
+  // Pre-fill email if user is logged in
+  useEffect(() => {
+    if (user?.email && !shippingData.email) {
+      setShippingData(prev => ({ ...prev, email: user.email }));
+    }
+  }, [user]);
 
   const generatePDF = (orderData) => {
     const doc = new jsPDF();
@@ -104,8 +114,8 @@ export default function CheckoutPage() {
     const itemsList = orderData.items.map(i => `${i.name} (${i.selectedSize}) x ${i.quantity}`).join('%0A- ');
     const message = `*NEW ORDER RECEIVED!*%0A%0A*Order:* ${orderData.order_id}%0A*Customer:* ${orderData.full_name}%0A*Phone:* ${orderData.phone}%0A*Total:* ₹${orderData.total_amount}%0A%0A*Items:*%0A- ${itemsList}%0A%0A*Address:* ${orderData.address}, ${orderData.city}%0A*Location:* ${orderData.location_link}`;
     
-    // Admin WhatsApp (using placeholder number, can be changed to actual admin number)
-    const adminWhatsApp = "919123456789"; 
+    // Admin WhatsApp
+    const adminWhatsApp = "916304218374"; 
     const waUrl = `https://wa.me/${adminWhatsApp}?text=${message}`;
     window.open(waUrl, '_blank');
   };
@@ -175,16 +185,19 @@ export default function CheckoutPage() {
             location_link: shippingData.locationLink,
             total_amount: cartTotal,
             items: cart,
-            payment_id: response.razorpay_payment_id
+            payment_id: response.razorpay_payment_id,
+            user_id: user?.id || null,
+            status: 'Processing'
           };
 
-          // Save to Supabase (Optional: but part of user request for visibility)
-          try {
-            await supabase.from('orders').insert([finalOrderData]);
-          } catch (err) {
-            console.error("Order save fails (table might not exist yet):", err);
+          // Save to Supabase
+          const { error: dbError } = await supabase.from('orders').insert([finalOrderData]);
+          if (dbError) {
+            console.error("Supabase Save Error:", dbError.message);
+            alert("Order placed, but we encountered a database error: " + dbError.message);
           }
 
+          setOrderSnapshot(finalOrderData);
           setOrderId(orderData.id);
           setIsOrdered(true);
           
@@ -234,30 +247,13 @@ export default function CheckoutPage() {
              <p className="text-xl font-black text-stone-900 mb-4">{orderId}</p>
              <div className="flex flex-col gap-3">
                 <button 
-                  onClick={() => generatePDF({
-                    order_id: orderId,
-                    full_name: `${shippingData.firstName} ${shippingData.lastName}`,
-                    phone: shippingData.phone,
-                    address: shippingData.address,
-                    city: shippingData.city,
-                    total_amount: cartTotal,
-                    items: [] // Empty here but user can click to download a simplified one if they missed the auto-one
-                  })}
+                  onClick={() => generatePDF(orderSnapshot)}
                   className="w-full py-3 bg-white border border-stone-200 rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-stone-100"
                 >
                   Download Receipt (PDF)
                 </button>
                 <button 
-                  onClick={() => sendWhatsAppNotification({
-                    order_id: orderId,
-                    full_name: `${shippingData.firstName} ${shippingData.lastName}`,
-                    phone: shippingData.phone,
-                    address: shippingData.address,
-                    city: shippingData.city,
-                    total_amount: cartTotal,
-                    items: [],
-                    location_link: shippingData.locationLink
-                  })}
+                  onClick={() => sendWhatsAppNotification(orderSnapshot)}
                   className="w-full py-3 bg-green-600 text-white rounded-xl text-sm font-bold flex items-center justify-center gap-2 hover:bg-green-700"
                 >
                   Send Details to WhatsApp

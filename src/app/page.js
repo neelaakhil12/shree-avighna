@@ -544,7 +544,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1 space-y-6">
             {[
-              { title: "Email Us", value: "shreeavighnanaturals@gmail.com", icon: EnvelopeIcon },
+              { title: "Email Us", value: "support@shreeavighnanaturals.com", icon: EnvelopeIcon },
               { title: "Call Us", value: "9885801623 & +91 63042 18374", icon: PhoneIcon },
               { title: "Visit Us", value: "9-1-364/B/38/2, Gandhi Nagar, Bapu ghat, Golconda, Hyderabad, 500008, Telangana", icon: MapPinIcon }
             ].map((info, idx) => (

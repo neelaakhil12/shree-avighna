@@ -13,7 +13,8 @@ import {
   CurrencyRupeeIcon,
   CalendarIcon,
   ShoppingBagIcon,
-  DocumentTextIcon
+  DocumentTextIcon,
+  TruckIcon
 } from '@heroicons/react/24/outline';
 
 const hardcodedProducts = [
@@ -220,6 +221,8 @@ export default function AdminDashboard() {
   const [orders, setOrders] = useState([]);
   const [categories, setCategories] = useState(['Wood Pressed']);
   const [revenueDate, setRevenueDate] = useState(new Date().toISOString().split('T')[0]);
+  const [managingTrackingOrder, setManagingTrackingOrder] = useState(null);
+  const [trackingUpdateData, setTrackingUpdateData] = useState({ status: '', tracking_id: '', tracking_link: '' });
 
   // Fetch data on load
   useEffect(() => {
@@ -257,7 +260,12 @@ export default function AdminDashboard() {
     if (!error && data) {
       setOrders(data);
     } else {
-      console.error("Fetch orders error:", error);
+      console.error("Fetch orders error:", error?.message);
+      if (error?.code === '42P01') {
+        alert("CRITICAL: The 'orders' table was not found in Supabase. Please check your SQL Editor and run the table creation script I provided.");
+      } else if (error) {
+        alert("Error fetching orders: " + error.message);
+      }
     }
     setLoading(false);
   };
@@ -319,6 +327,27 @@ export default function AdminDashboard() {
     doc.save(`invoice-${orderData.order_id}.pdf`);
   };
 
+  const handleUpdateTracking = async (orderId) => {
+    setLoading(true);
+    const { error } = await supabase
+      .from('orders')
+      .update({ 
+        status: trackingUpdateData.status, 
+        tracking_id: trackingUpdateData.tracking_id,
+        tracking_link: trackingUpdateData.tracking_link 
+      })
+      .eq('id', orderId);
+
+    if (error) {
+      alert('Error updating tracking: ' + error.message);
+    } else {
+      setOrders(orders.map(o => o.id === orderId ? { ...o, ...trackingUpdateData } : o));
+      setManagingTrackingOrder(null);
+      alert('Tracking updated successfully!');
+    }
+    setLoading(false);
+  };
+
   // Form State for Adding/Editing
   const [formData, setFormData] = useState({
     name: '',
@@ -360,12 +389,17 @@ export default function AdminDashboard() {
       benefits: '',
       image: '', 
       imageFile: null, 
-      imagePreview: null 
+      imagePreview: null,
+      useLiquidPricing: true,
+      useSolidPricing: false
     });
     setIsModalOpen(true);
   };
 
   const handleEditProduct = (product) => {
+    const hasLiquid = Object.keys(product.prices || {}).some(k => k.includes('ml') || k.includes('lt'));
+    const hasSolid = Object.keys(product.prices || {}).some(k => k.includes('grms'));
+
     setEditingProduct(product);
     setFormData({
       name: product.name,
@@ -385,7 +419,9 @@ export default function AdminDashboard() {
       benefits: Array.isArray(product.benefits) ? product.benefits.join('\n') : '',
       image: product.image_url || '',
       imageFile: null,
-      imagePreview: product.image_url || null
+      imagePreview: product.image_url || null,
+      useLiquidPricing: hasLiquid || (!hasLiquid && !hasSolid), 
+      useSolidPricing: hasSolid
     });
     setIsModalOpen(true);
   };
@@ -434,15 +470,15 @@ export default function AdminDashboard() {
       category: formData.category,
       prices: Object.fromEntries(
         Object.entries({
-          "250ml": Number(formData.price_250ml) || 0,
-          "500ml": Number(formData.price_500ml) || 0,
-          "1lt": Number(formData.price_1lt) || 0,
-          "5lts": Number(formData.price_5lts) || 0,
-          "10lts": Number(formData.price_10lts) || 0,
-          "15lts": Number(formData.price_15lts) || 0,
-          "250grms": Number(formData.price_250grms) || 0,
-          "500grms": Number(formData.price_500grms) || 0,
-          "1000grms": Number(formData.price_1000grms) || 0
+          "250ml": formData.useLiquidPricing ? (Number(formData.price_250ml) || 0) : 0,
+          "500ml": formData.useLiquidPricing ? (Number(formData.price_500ml) || 0) : 0,
+          "1lt": formData.useLiquidPricing ? (Number(formData.price_1lt) || 0) : 0,
+          "5lts": formData.useLiquidPricing ? (Number(formData.price_5lts) || 0) : 0,
+          "10lts": formData.useLiquidPricing ? (Number(formData.price_10lts) || 0) : 0,
+          "15lts": formData.useLiquidPricing ? (Number(formData.price_15lts) || 0) : 0,
+          "250grms": formData.useSolidPricing ? (Number(formData.price_250grms) || 0) : 0,
+          "500grms": formData.useSolidPricing ? (Number(formData.price_500grms) || 0) : 0,
+          "1000grms": formData.useSolidPricing ? (Number(formData.price_1000grms) || 0) : 0
         }).filter(([_, v]) => v > 0)
       ),
       in_stock: formData.inStock !== false,
@@ -512,15 +548,29 @@ export default function AdminDashboard() {
     }
   };
 
-  // Calculate Today's Revenue
-  const today = new Date().toISOString().split('T')[0];
+
+  // Calculate Today's Revenue using LOCAL date (IST timezone)
+  const todayLocal = new Date().toLocaleDateString('en-CA'); // 'en-CA' gives YYYY-MM-DD in local time
   const dailyRevenue = orders
-    .filter(o => o.created_at?.startsWith(today) && o.payment_id)
+    .filter(o => {
+      if (!o.created_at || !o.payment_id) return false;
+      const orderLocalDate = new Date(o.created_at).toLocaleDateString('en-CA');
+      return orderLocalDate === todayLocal;
+    })
     .reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0);
 
   // Calculate Custom Date Revenue
   const customDateRevenue = orders
-    .filter(o => o.created_at?.startsWith(revenueDate) && o.payment_id)
+    .filter(o => {
+      if (!o.created_at || !o.payment_id || !revenueDate) return false;
+      const orderLocalDate = new Date(o.created_at).toLocaleDateString('en-CA');
+      return orderLocalDate === revenueDate;
+    })
+    .reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0);
+
+  // Total Revenue (all time)
+  const totalRevenue = orders
+    .filter(o => o.payment_id)
     .reduce((sum, o) => sum + (Number(o.total_amount) || 0), 0);
 
   const stats = {
@@ -528,6 +578,7 @@ export default function AdminDashboard() {
     pendingOrders: orders.filter(o => !o.payment_id).length,
     completedOrders: orders.filter(o => o.payment_id).length,
     dailyRevenue: dailyRevenue,
+    totalRevenue: totalRevenue,
     customDateRevenue: customDateRevenue
   };
 
@@ -648,12 +699,13 @@ export default function AdminDashboard() {
         {activeTab === 'overview' && (
           <div className="space-y-12">
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
               {[
                 { label: 'Total Products', val: stats.totalProducts, icon: ArchiveBoxIcon, color: 'bg-blue-50 text-blue-600' },
                 { label: 'Pending Orders', val: stats.pendingOrders, icon: ChartBarIcon, color: 'bg-amber-50 text-amber-600' },
                 { label: 'Completed Orders', val: stats.completedOrders, icon: ShoppingBagIcon, color: 'bg-indigo-50 text-indigo-600' },
-                { label: 'Today\'s Revenue', val: `₹${stats.dailyRevenue}`, icon: CurrencyRupeeIcon, color: 'bg-green-50 text-green-600' },
+                { label: "Today's Revenue", val: `₹${stats.dailyRevenue.toLocaleString('en-IN')}`, icon: CurrencyRupeeIcon, color: 'bg-green-50 text-green-600' },
+                { label: 'Total Revenue', val: `₹${stats.totalRevenue.toLocaleString('en-IN')}`, icon: CurrencyRupeeIcon, color: 'bg-emerald-50 text-emerald-700' },
               ].map((stat, i) => (
                 <div key={i} className="bg-white p-6 rounded-[2.5rem] border border-stone-100 shadow-sm flex flex-col items-center text-center gap-4">
                   <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${stat.color}`}>
@@ -824,12 +876,70 @@ export default function AdminDashboard() {
                       <p className="mt-3 font-black text-secondary">₹{order.total_amount}</p>
                     </td>
                     <td className="px-8 py-6 text-right">
-                      <button 
-                        onClick={() => generateOrderPDF(order)}
-                        className="p-3 bg-stone-900 rounded-xl text-primary hover:bg-stone-800 transition-all flex items-center gap-2 ml-auto text-[10px] font-black uppercase tracking-widest"
-                      >
-                        <DocumentTextIcon className="w-4 h-4" /> PDF
-                      </button>
+                      <div className="flex flex-col gap-2 items-end">
+                        <button 
+                          onClick={() => generateOrderPDF(order)}
+                          className="p-3 bg-stone-100 rounded-xl text-stone-600 hover:bg-stone-200 transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest w-fit"
+                        >
+                          <DocumentTextIcon className="w-4 h-4" /> PDF Invoice
+                        </button>
+                        
+                        {managingTrackingOrder === order.id ? (
+                          <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 space-y-3 mt-2 animate-fade-in text-left">
+                            <div>
+                               <label className="block text-[9px] font-black uppercase tracking-widest text-stone-400 mb-1">Update Status</label>
+                               <select 
+                                 value={trackingUpdateData.status} 
+                                 onChange={(e) => setTrackingUpdateData({...trackingUpdateData, status: e.target.value})}
+                                 className="w-full text-xs font-bold p-2 rounded-lg border border-stone-200 outline-none"
+                               >
+                                 <option value="Processing">Processing</option>
+                                 <option value="Shipped">Shipped</option>
+                                 <option value="Delivered">Delivered</option>
+                                 <option value="Cancelled">Cancelled</option>
+                               </select>
+                            </div>
+                            <div>
+                               <label className="block text-[9px] font-black uppercase tracking-widest text-stone-400 mb-1">DTDC Tracking ID</label>
+                               <input 
+                                 type="text" 
+                                 value={trackingUpdateData.tracking_id} 
+                                 onChange={(e) => setTrackingUpdateData({...trackingUpdateData, tracking_id: e.target.value})}
+                                 placeholder="e.g. D12345678"
+                                 className="w-full text-xs font-bold p-2 rounded-lg border border-stone-200 outline-none"
+                               />
+                            </div>
+                            <div>
+                               <label className="block text-[9px] font-black uppercase tracking-widest text-stone-400 mb-1 mt-2">DTDC Tracking Link (Optional)</label>
+                               <input 
+                                 type="url" 
+                                 value={trackingUpdateData.tracking_link || ''} 
+                                 onChange={(e) => setTrackingUpdateData({...trackingUpdateData, tracking_link: e.target.value})}
+                                 placeholder="https://tdtc.in/tracking/..."
+                                 className="w-full text-xs font-bold p-2 rounded-lg border border-stone-200 outline-none"
+                               />
+                            </div>
+                            <div className="flex gap-2">
+                               <button onClick={() => setManagingTrackingOrder(null)} className="flex-grow py-2 bg-white border border-stone-200 rounded-lg text-[9px] font-black uppercase">Cancel</button>
+                               <button onClick={() => handleUpdateTracking(order.id)} className="flex-[2] py-2 bg-secondary text-white rounded-lg text-[9px] font-black uppercase">Save</button>
+                            </div>
+                          </div>
+                        ) : (
+                          <button 
+                            onClick={() => {
+                              setManagingTrackingOrder(order.id);
+                              setTrackingUpdateData({ status: order.status || 'Processing', tracking_id: order.tracking_id || '', tracking_link: order.tracking_link || '' });
+                            }}
+                            className="p-3 bg-secondary/10 rounded-xl text-secondary hover:bg-secondary/20 transition-all flex items-center gap-2 text-[10px] font-black uppercase tracking-widest w-fit"
+                          >
+                            <TruckIcon className="w-4 h-4" /> Manage Tracking
+                          </button>
+                        )}
+                        
+                        {order.tracking_id && (
+                          <p className="text-[10px] font-bold text-stone-400 mt-1 italic uppercase">Tracking: {order.tracking_id}</p>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -862,8 +972,20 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <h4 className="text-xs font-bold text-stone-500 uppercase tracking-widest pt-2">Liquid Pricing (ML/LT)</h4>
-                <div className="grid grid-cols-4 gap-4">
+                <div className="flex items-center justify-between border-b border-stone-100 pb-2">
+                   <h4 className="text-xs font-bold text-stone-900 uppercase tracking-widest pt-2">⚙️ Liquid Pricing (ML/LT)</h4>
+                   <label className="flex items-center gap-2 cursor-pointer group">
+                      <span className="text-[10px] font-black uppercase text-stone-400 group-hover:text-stone-600">Enable Liquid</span>
+                      <input 
+                        type="checkbox" 
+                        checked={formData.useLiquidPricing} 
+                        onChange={(e) => setFormData({...formData, useLiquidPricing: e.target.checked})}
+                        className="w-5 h-5 accent-secondary rounded"
+                      />
+                   </label>
+                </div>
+                
+                <div className={`grid grid-cols-4 gap-4 transition-all ${!formData.useLiquidPricing ? 'opacity-30 pointer-events-none grayscale' : ''}`}>
                   <div>
                     <label className="block text-[10px] uppercase font-black text-stone-400 mb-2">250ML (₹)</label>
                     <input type="number" value={formData.price_250ml} onChange={(e) => setFormData({...formData, price_250ml: e.target.value})} className="w-full px-4 py-4 rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:border-secondary font-bold text-sm" placeholder="100" />
@@ -880,13 +1002,19 @@ export default function AdminDashboard() {
                       onChange={(e) => {
                         const val = e.target.value;
                         const num = Number(val);
-                        setFormData({
-                          ...formData, 
-                          price_1lt: val,
-                          price_250ml: val ? Math.round(num * 0.25).toString() : formData.price_250ml,
-                          price_500ml: val ? Math.round(num * 0.5).toString() : formData.price_500ml,
-                          price_5lts: val ? Math.round(num * 5).toString() : formData.price_5lts
-                        });
+                        if (val) {
+                          setFormData({
+                            ...formData, 
+                            price_1lt: val,
+                            price_250ml: Math.round(num * 0.25).toString(),
+                            price_500ml: Math.round(num * 0.5).toString(),
+                            price_5lts: Math.round(num * 5).toString(),
+                            price_10lts: Math.round(num * 10).toString(),
+                            price_15lts: Math.round(num * 15).toString()
+                          });
+                        } else {
+                          setFormData({ ...formData, price_1lt: val });
+                        }
                       }} 
                       className="w-full px-4 py-4 rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:border-secondary font-bold text-sm" 
                       placeholder="400" 
@@ -909,8 +1037,20 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <h4 className="text-xs font-bold text-stone-500 uppercase tracking-widest pt-2">Solid Pricing (Grams)</h4>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="flex items-center justify-between border-b border-stone-100 pb-2">
+                   <h4 className="text-xs font-bold text-stone-900 uppercase tracking-widest pt-2">📦 Solid Pricing (Grams)</h4>
+                   <label className="flex items-center gap-2 cursor-pointer group">
+                      <span className="text-[10px] font-black uppercase text-stone-400 group-hover:text-stone-600">Enable Solid</span>
+                      <input 
+                        type="checkbox" 
+                        checked={formData.useSolidPricing} 
+                        onChange={(e) => setFormData({...formData, useSolidPricing: e.target.checked})}
+                        className="w-5 h-5 accent-secondary rounded"
+                      />
+                   </label>
+                </div>
+
+                <div className={`grid grid-cols-3 gap-4 transition-all ${!formData.useSolidPricing ? 'opacity-30 pointer-events-none grayscale' : ''}`}>
                   <div>
                     <label className="block text-[10px] uppercase font-black text-stone-400 mb-2">250GRMS (₹)</label>
                     <input type="number" value={formData.price_250grms} onChange={(e) => setFormData({...formData, price_250grms: e.target.value})} className="w-full px-4 py-4 rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:border-secondary font-bold text-sm" placeholder="150" />
@@ -927,12 +1067,16 @@ export default function AdminDashboard() {
                       onChange={(e) => {
                         const val = e.target.value;
                         const num = Number(val);
-                        setFormData({
-                          ...formData, 
-                          price_1000grms: val,
-                          price_250grms: val ? Math.round(num * 0.25).toString() : formData.price_250grms,
-                          price_500grms: val ? Math.round(num * 0.5).toString() : formData.price_500grms
-                        });
+                        if (val) {
+                          setFormData({
+                            ...formData, 
+                            price_1000grms: val,
+                            price_250grms: Math.round(num * 0.25).toString(),
+                            price_500grms: Math.round(num * 0.5).toString()
+                          });
+                        } else {
+                          setFormData({ ...formData, price_1000grms: val });
+                        }
                       }} 
                       className="w-full px-4 py-4 rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:border-secondary font-bold text-sm" 
                       placeholder="500" 

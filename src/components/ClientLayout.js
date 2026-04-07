@@ -3,10 +3,44 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { usePathname } from 'next/navigation';
-import { CartProvider } from '@/context/CartContext';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import { usePathname, useRouter } from 'next/navigation';
+import { CartProvider } from '../context/CartContext';
+import { AuthProvider, useAuth } from '../context/AuthContext';
+import { SessionProvider } from 'next-auth/react';
+import Navbar from './Navbar';
+import Footer from './Footer';
+
+// Inner component to handle auth redirect logic
+function AuthGuard({ children }) {
+  const { user, loading } = useAuth();
+  const pathname = usePathname();
+  const router = useRouter();
+  const isAdmin = pathname?.startsWith('/admin');
+
+  useEffect(() => {
+    // Only redirect if we are NOT on the login page and NOT on an admin page
+    if (!loading && !user && pathname !== '/login' && !isAdmin) {
+      router.push('/login');
+    }
+  }, [user, loading, pathname, router, isAdmin]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-stone-50">
+        <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  // Allow access to login and admin pages without a user
+  const isAllowedPath = pathname === '/login' || isAdmin;
+  
+  if (!user && !isAllowedPath) {
+    return null;
+  }
+
+  return children;
+}
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname();
@@ -21,7 +55,10 @@ export default function ClientLayout({ children }) {
   }, []);
 
   return (
-    <CartProvider>
+    <SessionProvider>
+      <AuthProvider>
+        <AuthGuard>
+          <CartProvider>
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className={`flex-grow ${isAdmin ? 'pt-0' : 'pt-[80px] md:pt-[112px]'}`}>
@@ -49,6 +86,9 @@ export default function ClientLayout({ children }) {
 
         {!isAdmin && <Footer />}
       </div>
-    </CartProvider>
+          </CartProvider>
+        </AuthGuard>
+      </AuthProvider>
+    </SessionProvider>
   );
 }

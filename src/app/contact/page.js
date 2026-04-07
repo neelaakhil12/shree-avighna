@@ -6,7 +6,7 @@ import { EnvelopeIcon, PhoneIcon, MapPinIcon } from '@heroicons/react/24/outline
 const contactInfo = [
   {
     title: "Email Us",
-    value: "shreeavighnanaturals@gmail.com",
+    value: "support@shreeavighnanaturals.com",
     icon: EnvelopeIcon
   },
   {

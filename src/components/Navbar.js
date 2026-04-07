@@ -6,11 +6,13 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ShoppingCartIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { cartCount } = useCart();
+  const { user, signOut } = useAuth();
   const pathname = usePathname();
 
   // Hide navbar on admin routes
@@ -70,11 +72,42 @@ const Navbar = () => {
               )}
             </Link>
 
+            {user ? (
+              <div className="flex items-center gap-4">
+                <Link 
+                  href="/account"
+                  className="bg-stone-50 border border-stone-100 text-stone-900 px-5 py-2.5 rounded-full font-bold text-sm hover:bg-stone-100 transition-all flex items-center gap-2"
+                >
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  Account
+                </Link>
+                <button 
+                  onClick={() => signOut()}
+                  className="text-stone-400 hover:text-red-500 text-xs font-bold uppercase tracking-widest transition-colors"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <Link 
+                href="/login" 
+                className="btn-primary px-8 py-2.5 text-sm"
+              >
+                Sign In
+              </Link>
+            )}
 
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-4">
+            {user && (
+               <Link href="/account" className="p-2 text-primary">
+                 <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                 </div>
+               </Link>
+            )}
             <Link href="/cart" className="relative p-2 text-stone-700">
               <ShoppingCartIcon className="w-6 h-6" />
               {cartCount > 0 && (

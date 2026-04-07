@@ -575,8 +575,8 @@ export default function AdminDashboard() {
 
   const stats = {
     totalProducts: products.length,
-    pendingOrders: orders.filter(o => !o.payment_id).length,
-    completedOrders: orders.filter(o => o.payment_id).length,
+    pendingOrders: orders.filter(o => o.status !== 'Delivered' && o.status !== 'Cancelled').length,
+    completedOrders: orders.filter(o => o.status === 'Delivered').length,
     dailyRevenue: dailyRevenue,
     totalRevenue: totalRevenue,
     customDateRevenue: customDateRevenue
@@ -770,8 +770,8 @@ export default function AdminDashboard() {
                         <p className="text-[10px] text-stone-400">{order.phone}</p>
                       </td>
                       <td className="px-8 py-6">
-                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${order.status === 'pending' ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'}`}>
-                           {order.payment_id ? 'PAID' : (order.status || 'pending')}
+                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${['Delivered', 'Shipped'].includes(order.status) ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600'}`}>
+                           {order.status || (order.payment_id ? 'Processing' : 'Pending')}
                         </span>
                       </td>
                       <td className="px-8 py-6 text-right font-black text-secondary">₹{order.total_amount || order.total}</td>
@@ -853,8 +853,8 @@ export default function AdminDashboard() {
                     <td className="px-8 py-6">
                       <p className="font-black text-stone-900 text-xs mb-1 uppercase tracking-tighter">{order.order_id || order.id.slice(0,10)}</p>
                       <p className="text-[10px] text-stone-400 font-bold uppercase tracking-widest">{new Date(order.created_at).toLocaleDateString()}</p>
-                      <span className={`inline-block mt-2 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${order.payment_id ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600'}`}>
-                        {order.payment_id ? 'Paid' : 'Pending'}
+                      <span className={`inline-block mt-2 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${['Delivered', 'Shipped'].includes(order.status) ? 'bg-green-50 text-green-600' : 'bg-amber-50 text-amber-600'}`}>
+                        {order.status || (order.payment_id ? 'Paid (Processing)' : 'Pending')}
                       </span>
                     </td>
                     <td className="px-8 py-6">

@@ -234,40 +234,56 @@ export default function AdminDashboard() {
 
   const fetchProducts = async () => {
     setLoading(true);
-    const { data: dbData, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
-    
-    if (!error && dbData) {
-      // Merge: Show ALL from DB + only hardcoded ones NOT in DB
-      const dbNames = new Set(dbData.map(p => p.name.toLowerCase()));
-      const merged = [
-        ...dbData,
-        ...hardcodedProducts.filter(hp => !dbNames.has(hp.name.toLowerCase()))
-      ];
-      setProducts(merged);
-    } else {
-      setProducts(hardcodedProducts);
+    try {
+      const { data: dbData, error } = await supabase
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (!error && dbData) {
+        // Merge: Show ALL from DB + only hardcoded ones NOT in DB
+        const dbNames = new Set(dbData.map(p => p.name.toLowerCase()));
+        const merged = [
+          ...dbData,
+          ...hardcodedProducts.filter(hp => !dbNames.has(hp.name.toLowerCase()))
+        ];
+        setProducts(merged);
+      } else {
+        console.warn("Supabase products error, using fallback:", error?.message);
+        setProducts(hardcodedProducts);
+      }
+    } catch (err) {
+      console.error("Network error fetching products:", err);
+      setProducts(hardcodedProducts); // Fallback even on network error
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const fetchOrders = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('orders')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
-    if (!error && data) {
-      setOrders(data);
-    } else {
-      console.error("Fetch orders error:", error?.message);
-      if (error?.code === '42P01') {
-        alert("CRITICAL: The 'orders' table was not found in Supabase. Please check your SQL Editor and run the table creation script I provided.");
+    try {
+      const { data, error } = await supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (!error && data) {
+        setOrders(data);
       } else if (error) {
-        alert("Error fetching orders: " + error.message);
+        console.error("Fetch orders error:", error.message);
+        if (error.code === '42P01') {
+          alert("CRITICAL: The 'orders' table was not found in Supabase.");
+        } else {
+          // Only alert once to avoid spamming the user
+          console.error("Supabase error:", error.message);
+        }
       }
+    } catch (err) {
+      console.error("Network error fetching orders:", err);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const generateOrderPDF = (orderData) => {
@@ -414,9 +430,10 @@ export default function AdminDashboard() {
       price_500grms: product.prices?.["500grms"] || '',
       price_1000grms: product.prices?.["1000grms"] || '',
       inStock: product.in_stock !== false,
-      description: product.description || '',
+      // Combine description and benefits for editing in one box
+      description: `${product.description || ''}${product.benefits && product.benefits.length > 0 ? '\n\nHealth Benefits:\n' + product.benefits.join('\n') : ''}`,
       caption: product.caption || '',
-      benefits: Array.isArray(product.benefits) ? product.benefits.join('\n') : '',
+      benefits: '', // No longer used as a separate field
       image: product.image_url || '',
       imageFile: null,
       imagePreview: product.image_url || null,
@@ -484,7 +501,7 @@ export default function AdminDashboard() {
       in_stock: formData.inStock !== false,
       description: formData.description,
       caption: formData.caption,
-      benefits: formData.benefits.split('\n').filter(b => b.trim() !== ''),
+      benefits: [], // Benefits are now part of the description
       image_url: imageUrl
     };
 
@@ -1110,23 +1127,14 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1">
                    <div>
-                    <label className="block text-[10px] uppercase font-black text-stone-400 mb-2">Product Description</label>
+                    <label className="block text-[10px] uppercase font-black text-stone-400 mb-2">Product Description & Benefits</label>
                     <textarea 
                       value={formData.description} 
                       onChange={(e) => setFormData({...formData, description: e.target.value})} 
-                      className="w-full px-6 py-4 rounded-2xl bg-stone-50 border border-stone-200 focus:outline-none focus:border-secondary font-medium text-xs h-32 resize-none" 
-                      placeholder="General description..."
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[10px] uppercase font-black text-stone-400 mb-2">Health Benefits (One per line)</label>
-                    <textarea 
-                      value={formData.benefits} 
-                      onChange={(e) => setFormData({...formData, benefits: e.target.value})} 
-                      className="w-full px-6 py-4 rounded-2xl bg-stone-50 border border-stone-200 focus:outline-none focus:border-secondary font-medium text-xs h-32 resize-none" 
-                      placeholder="Benefit 1&#10;Benefit 2&#10;Benefit 3..."
+                      className="w-full px-6 py-4 rounded-2xl bg-stone-50 border border-stone-200 focus:outline-none focus:border-secondary font-medium text-xs h-48 resize-none" 
+                      placeholder="Enter the full product description and any health benefits here..."
                     />
                   </div>
                 </div>

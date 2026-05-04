@@ -4,15 +4,28 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter, usePathname } from 'next/navigation';
 import { PlusIcon, MinusIcon, EyeIcon, XMarkIcon, CheckCircleIcon, ShoppingCartIcon } from '@heroicons/react/24/solid';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ProductCard = ({ product, priority = false }) => {
-  const { cart, addToCart, removeFromCart, updateQuantity } = useCart();
+  const { cart, addToCart: baseAddToCart, removeFromCart, updateQuantity } = useCart();
+  const { user } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
   
   const availableSizes = Object.keys(product?.prices || {});
   const [selectedSize, setSelectedSize] = React.useState(availableSizes.includes('1lt') ? '1lt' : (availableSizes[0] || ''));
   const [showDetails, setShowDetails] = React.useState(false);
+
+  const addToCart = (prod, size) => {
+    if (!user) {
+      router.push(`/login?callbackUrl=${pathname}`);
+      return;
+    }
+    baseAddToCart(prod, size);
+  };
   
   const isOutOfStock = product.in_stock === false;
   
@@ -85,22 +98,15 @@ const ProductCard = ({ product, priority = false }) => {
                 )}
               </div>
 
-              <div className="space-y-6 mb-12">
-                <div className="flex items-start gap-4 group">
-                  <CheckCircleIcon className="w-6 h-6 text-primary shrink-0 mt-0.5 transition-transform group-hover:scale-110" />
-                  <p className="text-stone-700 text-lg leading-relaxed font-medium">
-                    {product.description}
-                  </p>
-                </div>
-
-                {product.benefits && product.benefits.map((benefit, i) => (
+              <div className="space-y-4 mb-12">
+                {product.description?.split('\n').map((line, i) => line.trim() ? (
                   <div key={i} className="flex items-start gap-4 group">
                     <CheckCircleIcon className="w-6 h-6 text-primary shrink-0 mt-0.5 transition-transform group-hover:scale-110" />
                     <p className="text-stone-700 text-lg leading-relaxed font-medium">
-                      {benefit}
+                      {line.replace(/^[•\-\*\d\.]+\s*/, '')}
                     </p>
                   </div>
-                ))}
+                ) : null)}
               </div>
 
               {availableSizes.length > 1 && (

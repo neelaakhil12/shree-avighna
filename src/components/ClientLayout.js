@@ -17,12 +17,16 @@ function AuthGuard({ children }) {
   const router = useRouter();
   const isAdmin = pathname?.startsWith('/admin');
 
+  // Define routes that require authentication
+  const protectedRoutes = ['/account', '/checkout'];
+  const isProtectedRoute = protectedRoutes.some(route => pathname?.startsWith(route));
+
   useEffect(() => {
-    // Only redirect if we are NOT on the login page and NOT on an admin page
-    if (!loading && !user && pathname !== '/login' && !isAdmin) {
-      router.push('/login');
+    // Only redirect if it's a protected route and user is not logged in
+    if (!loading && !user && isProtectedRoute && pathname !== '/login') {
+      router.push('/login?callbackUrl=' + pathname);
     }
-  }, [user, loading, pathname, router, isAdmin]);
+  }, [user, loading, pathname, router, isAdmin, isProtectedRoute]);
 
   if (loading) {
     return (
@@ -32,10 +36,8 @@ function AuthGuard({ children }) {
     );
   }
 
-  // Allow access to login and admin pages without a user
-  const isAllowedPath = pathname === '/login' || isAdmin;
-  
-  if (!user && !isAllowedPath) {
+  // Allow access to public routes even without a user
+  if (!user && isProtectedRoute && pathname !== '/login') {
     return null;
   }
 
